@@ -13,7 +13,7 @@ html {
   padding: 0;
   background-color: #000;
   height: 100vh;
-  overflow: hidden;
+
 }
 
 *,
@@ -28,9 +28,10 @@ html {
 
 body {
   margin: 0;
+  border:0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 
