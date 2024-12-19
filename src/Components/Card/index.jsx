@@ -1,4 +1,6 @@
+import React, { useState } from "react";
 import styled from "styled-components";
+import ModalEditCard from "../ModalEditCard";
 
 const CardContainer = styled.div`
   width: 300px;
@@ -48,16 +50,24 @@ const Button = styled.button`
   }
 `;
 
-const Card = ({ title, image, onEdit, onDelete }) => {
+function Card({ title, image, onEdit, onDelete }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
-    <CardContainer>
-      <Thumbnail image={image} />
-      <Actions>
-        <Button onClick={onEdit}>Editar</Button>
-        <Button onClick={onDelete}>Eliminar</Button>
-      </Actions>
-    </CardContainer>
+    <>
+      <CardContainer>
+        <Thumbnail image={image} />
+        <Actions>
+          <Button onClick={openModal}>Editar</Button>
+          <Button onClick={onDelete}>Eliminar</Button>
+        </Actions>
+      </CardContainer>
+      <ModalEditCard isOpen={isModalOpen} onClose={closeModal} />
+    </>
   );
-};
+}
 
 export default Card;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Section from "../Section";
+import { CategoryProvider } from "../CategoryContext";
 
 const BannerContainer = styled.main`
   display: flex;
@@ -11,13 +12,21 @@ const BannerContainer = styled.main`
 `;
 
 function Banner() {
+  const categories = [
+    "Aperturas de Ajedrez",
+    "Tácticas de Ajedrez",
+    "Grandes Maestros y Partidas Históricas",
+    "Ajedrez y Entretenimiento/Curiosidades",
+  ];
+
   return (
-    <BannerContainer>
-      <Section title="Aperturas de Ajedrez" />
-      <Section title="Tácticas de Ajedrez" />
-      <Section title="Grandes Maestros y Partidas Históricas" />
-      <Section title="Ajedrez y Entretenimiento/Curiosidades" />
-    </BannerContainer>
+    <CategoryProvider categories={categories}>
+      <BannerContainer>
+        {categories.map((category) => (
+          <Section key={category} title={category} />
+        ))}
+      </BannerContainer>
+    </CategoryProvider>
   );
 }
 
