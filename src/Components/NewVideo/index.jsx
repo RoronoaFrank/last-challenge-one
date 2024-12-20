@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Api from "../APIs";
 
 const FormContainer = styled.div`
   max-width: 600px;
@@ -72,23 +73,37 @@ const FormContainer = styled.div`
 const NewVideo = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    image: "",
-    video: "",
-    description: "",
+    titulo: "",
+    categoria: "",
+    urlImagen: "",
+    urlVideo: "",
+    descripcion: "",
   });
-
+  // Manejar los cambios en los inputs
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e) => {
+  // Manejar el envío del formulario
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí podrías manejar el envío de datos, por ejemplo, llamando a una API.
-    console.log("Nuevo video:", formData);
-    navigate("/"); // Redirigir a la página principal después de guardar.
+    try {
+      // Enviar los datos al servidor
+      await Api.post("/", formData);
+      alert("Video agregado exitosamente");
+
+      // Reiniciar el formulario
+      setFormData({
+        titulo: "",
+        categoria: "",
+        urlImagen: "",
+        urlVideo: "",
+        descripcion: "",
+      });
+    } catch (error) {
+      console.error("Error al agregar el video:", error);
+      alert("Hubo un error al agregar el video");
+    }
+    navigate("/");
   };
 
   const handleCancel = () => navigate("/");
@@ -97,22 +112,22 @@ const NewVideo = () => {
     <FormContainer>
       <h2>Agregar Nuevo Video</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Título</label>
+        <label htmlFor="titulo">Título</label>
         <input
           type="text"
-          id="title"
-          name="title"
+          id="titulo"
+          name="titulo"
           placeholder="Ingresa el título"
-          value={formData.title}
+          value={formData.titulo}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="category">Categoría</label>
+        <label htmlFor="categoria">Categoría</label>
         <select
-          id="category"
-          name="category"
-          value={formData.category}
+          id="categoria"
+          name="categoria"
+          value={formData.categoria}
           onChange={handleChange}
           required
         >
@@ -127,34 +142,34 @@ const NewVideo = () => {
           </option>
         </select>
 
-        <label htmlFor="image">URL de Imagen</label>
+        <label htmlFor="urlImagen">URL de Imagen</label>
         <input
           type="url"
-          id="image"
-          name="image"
+          id="urlImagen"
+          name="urlImagen"
           placeholder="URL de la imagen"
-          value={formData.image}
+          value={formData.urlImagen}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="video">URL de Video</label>
+        <label htmlFor="urlVideo">URL de Video</label>
         <input
           type="url"
-          id="video"
-          name="video"
+          id="urlVideo"
+          name="urlVideo"
           placeholder="URL del video"
-          value={formData.video}
+          value={formData.urlVideo}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="description">Descripción</label>
+        <label htmlFor="descripcion">Descripción</label>
         <textarea
-          id="description"
-          name="description"
+          id="descripcion"
+          name="descripcion"
           placeholder="Escribe una descripción"
-          value={formData.description}
+          value={formData.descripcion}
           onChange={handleChange}
         ></textarea>
 
