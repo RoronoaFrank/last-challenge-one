@@ -1,4 +1,4 @@
-import { useCategoryContext } from "../CategoryContext";
+import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
