@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import ModalEditCard from "../ModalEditCard";
+import PropTypes from "prop-types";
 
 const CardContainer = styled.div`
-  width: 300px;
-  height: 200px;
+  width: 430px;
+  height: 320px;
   background-color: #1e1e2e;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem;
+  gap: 0.5%;
+  padding: 0.5rem;
   transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover {
@@ -22,16 +23,40 @@ const CardContainer = styled.div`
 
 const Thumbnail = styled.div`
   width: 100%;
-  height: 70%;
-  background-image: ${({ image }) => `url(${image})`};
+  min-height: 70%;
+  background-image: ${({ imagen }) => `url(${imagen})`};
   background-size: cover;
   background-position: center;
   border-radius: 4px;
 `;
 
-const Actions = styled.div`
+const Title = styled.h3`
+height:10%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+
+`;
+const Description = styled.p`
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.7rem;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height:10%;
+  margin: 0;
+  margin: 0;
+  
+`;
+
+const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  bottom:0%;
+
 `;
 
 const Button = styled.button`
@@ -50,7 +75,7 @@ const Button = styled.button`
   }
 `;
 
-function Card({ title, image, onEdit, onDelete }) {
+function Card({ imagen, titulo, descripcion, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -59,15 +84,24 @@ function Card({ title, image, onEdit, onDelete }) {
   return (
     <>
       <CardContainer>
-        <Thumbnail image={image} />
-        <Actions>
+        <Thumbnail imagen={imagen} alt={`Imangen descriptiva de: ${titulo}`} />
+        <Title title= {titulo}>{titulo}</Title>
+        <Description title= {descripcion}>{descripcion}</Description>
+        <ButtonsContainer>
           <Button onClick={openModal}>Editar</Button>
           <Button onClick={onDelete}>Eliminar</Button>
-        </Actions>
+        </ButtonsContainer>
       </CardContainer>
       <ModalEditCard isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
 }
+
+Card.propTypes = {
+  imagen: PropTypes.string.isRequired,
+  titulo: PropTypes.string.isRequired,
+  descripcion: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
 
 export default Card;

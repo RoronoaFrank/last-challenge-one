@@ -23,7 +23,7 @@ function Banner() {
     <CategoryProvider categories={categories}>
       <BannerContainer>
         {categories.map((category) => (
-          <Section key={category} title={category} />
+          <Section key={category} category={category} />
         ))}
       </BannerContainer>
     </CategoryProvider>

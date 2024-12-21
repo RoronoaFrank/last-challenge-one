@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Card from "../Card";
+import Api from "../APIs";
 
 const StyledSection = styled.section`
   display: flex;
@@ -24,23 +26,50 @@ const CardContainer = styled.div`
   gap: 1rem;
 `;
 
-function Section({ title }) {
+function Section({ category }) {
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await Api.get("/");
+        // Filtrar los videos por categoría
+        const filteredVideos = response.data.filter(
+          (video) => video.categoria === category
+        );
+        setVideos(filteredVideos);
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      }
+    };
+
+    fetchVideos();
+  }, [category]);
+
   return (
     <StyledSection>
-      <SectionTitle>{title}</SectionTitle>
+      <SectionTitle>{category}</SectionTitle>
       <CardContainer>
-       <Card/>
-       <Card/>
-       <Card/>
-       <Card/>
+        {videos.map((video) => (
+          <Card
+            key={video.id}
+            imagen={video.urlImagen}
+            titulo={video.titulo}
+            descripcion={video.descripcion}
+            onDelete={() => handleDelete(video.id)}
+          />
+        ))}
       </CardContainer>
     </StyledSection>
   );
-}
+};
+
+const handleDelete = (id) => {
+  console.log(`Delete video with ID: ${id}`);
+};
 
 Section.propTypes = {
-  title: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
 };
 
 export default Section;
-
