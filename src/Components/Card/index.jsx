@@ -24,7 +24,7 @@ const CardContainer = styled.div`
 const Thumbnail = styled.div`
   width: 100%;
   min-height: 70%;
-  background-image: ${({ imagen }) => `url(${imagen})`};
+  background-image: ${({ $image }) => `url(${$image})`};
   background-size: cover;
   background-position: center;
   border-radius: 4px;
@@ -75,7 +75,7 @@ const Button = styled.button`
   }
 `;
 
-function Card({ imagen, titulo, descripcion, onDelete }) {
+function Card({ id,image, video, title, category, description, onDelete, onEditSuccess }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -84,24 +84,42 @@ function Card({ imagen, titulo, descripcion, onDelete }) {
   return (
     <>
       <CardContainer>
-        <Thumbnail imagen={imagen} alt={`Imangen descriptiva de: ${titulo}`} />
-        <Title title= {titulo}>{titulo}</Title>
-        <Description title= {descripcion}>{descripcion}</Description>
+        <Thumbnail $image={image} alt={`Imagen descriptiva de: ${title}`} />
+        <Title title= {title}>{title}</Title>
+        <Description title= {description}>{description}</Description>
         <ButtonsContainer>
           <Button onClick={openModal}>Editar</Button>
           <Button onClick={onDelete}>Eliminar</Button>
         </ButtonsContainer>
       </CardContainer>
-      <ModalEditCard isOpen={isModalOpen} onClose={closeModal} />
+      <ModalEditCard 
+      isOpen={isModalOpen} 
+      onClose={closeModal} 
+      id={id}
+      title={title}
+      category={category}
+      image={image}
+      video={video}
+      description={description}
+      onEditSuccess={(updatedVideo) => {
+        console.log("Passing updated video to Section:", updatedVideo);
+        onEditSuccess(updatedVideo);
+        closeModal();
+      }}
+      />
     </>
   );
 }
 
 Card.propTypes = {
-  imagen: PropTypes.string.isRequired,
-  titulo: PropTypes.string.isRequired,
-  descripcion: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  video: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEditSuccess: PropTypes.func.isRequired,
 };
 
 export default Card;

@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
+import Api from "../APIs";
 import PropTypes from "prop-types";
 
 const StylizedDialog = styled.dialog`
@@ -84,28 +86,97 @@ const StylizedDialog = styled.dialog`
   }
 `;
 
-const ModalEditCard = ({ isOpen, onClose }) => {
+const ModalEditCard = ({
+  isOpen,
+  onClose,
+  id,
+  title,
+  category,
+  image,
+  video,
+  description,
+  onEditSuccess,
+}) => {
   const categories = useCategoryContext();
+
+  const [formData, setFormData] = useState({
+    title,
+    category,
+    image,
+    video,
+    description,
+  });
+
+  useEffect(() => {
+    setFormData({
+      title,
+      category,
+      image,
+      video,
+      description,
+    });
+  }, [title, category, image, video, description]);
+
+  const handleEdit = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedCard = { ...formData, id };
+      await Api.put(`/${id}`, updatedCard);
+      console.log("Video editado con éxito:", updatedCard);
+      onEditSuccess(updatedCard);
+      onClose();
+    } catch (error) {
+      console.error("Error updating video:", error);
+    }
+  };
+
   return (
     <StylizedDialog open={isOpen}>
-      <button type="button" className="close" onClick={onClose}>
+      <button
+        type="button"
+        className="close"
+        onClick={() => {
+          onClose();
+          setFormData({
+            title,
+            category,
+            image,
+            video,
+            description,
+          });
+        }}
+      >
         &times;
       </button>
       <h2>Editar Card</h2>
 
-      <form>
-        <label htmlFor="title">Título</label>
+      <form onSubmit={handleSave}>
+        <label htmlFor="title">Titulo</label>
         <input
           type="text"
           id="title"
           name="title"
-          placeholder="Ingresa el título"
+          value={formData.title}
+          onChange={handleEdit}
           required
         />
 
-        <label htmlFor="category">Categoría</label>
-        <select id="category" name="category" required>
-          <option value="">Selecciona una categoría</option>
+        <label htmlFor="category">Categoria</label>
+        <select
+          id="category"
+          name="category"
+          value={formData.category}
+          onChange={handleEdit}
+          required
+        >
           {categories.map((category) => (
             <option key={category} value={category}>
               {category}
@@ -118,7 +189,8 @@ const ModalEditCard = ({ isOpen, onClose }) => {
           type="url"
           id="image"
           name="image"
-          placeholder="URL de la imagen"
+          value={formData.image}
+          onChange={handleEdit}
           required
         />
 
@@ -127,7 +199,8 @@ const ModalEditCard = ({ isOpen, onClose }) => {
           type="url"
           id="video"
           name="video"
-          placeholder="URL del video"
+          value={formData.video}
+          onChange={handleEdit}
           required
         />
 
@@ -135,15 +208,28 @@ const ModalEditCard = ({ isOpen, onClose }) => {
         <textarea
           id="description"
           name="description"
-          placeholder="Escribe una descripción"
+          value={formData.description}
+          onChange={handleEdit}
         ></textarea>
 
         <div className="button-group">
           <button type="submit" className="save">
             Guardar
           </button>
-          <button type="reset" className="reset">
-            Limpiar
+          <button
+            type="reset"
+            className="reset"
+            onClick={() =>
+              setFormData({
+                title,
+                category,
+                image,
+                video,
+                description,
+              })
+            }
+          >
+            Reset
           </button>
         </div>
       </form>
@@ -154,6 +240,13 @@ const ModalEditCard = ({ isOpen, onClose }) => {
 ModalEditCard.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  video: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  onEditSuccess: PropTypes.func.isRequired,
 };
 
 export default ModalEditCard;

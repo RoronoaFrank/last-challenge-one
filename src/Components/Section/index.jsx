@@ -28,23 +28,55 @@ const CardContainer = styled.div`
 
 function Section({ category }) {
   const [videos, setVideos] = useState([]);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   useEffect(() => {
+    console.log("Videos updated:", videos);
+  }, [videos]);
+
+  useEffect(() => {
+    console.log("Category changed:", category);
+  }, [category]);
+
+  useEffect(() => {
+    let isMounted = true;
     const fetchVideos = async () => {
       try {
         const response = await Api.get("/");
         // Filtrar los videos por categoría
         const filteredVideos = response.data.filter(
-          (video) => video.categoria === category
+          (video) => video.category === category
         );
-        setVideos(filteredVideos);
+        console.log("Fetched videos:", filteredVideos);
+        if (isMounted) {
+          setVideos(filteredVideos);
+        }
       } catch (error) {
         console.error("Error fetching videos:", error);
       }
     };
 
     fetchVideos();
-  }, [category]);
+    return () => {
+      isMounted = false;
+    };
+  }, [category,fetchTrigger]);
+
+  const handleEditSuccess = (updatedVideo) => {
+    console.log("HandleEditSuccess received:", updatedVideo);
+    setVideos((prevVideos) => {
+      const updatedVideos = prevVideos.map((video) =>
+        video.id === updatedVideo.id ? { ...video, ...updatedVideo } : video
+      );
+      console.log("Updated videos array:", updatedVideos);
+      return updatedVideos;
+    });
+    setFetchTrigger((prev) => !prev);
+  };
+
+  const handleDelete = (id) => {
+    console.log(`Delete video with ID: ${id}`);
+  };
 
   return (
     <StyledSection>
@@ -53,20 +85,20 @@ function Section({ category }) {
         {videos.map((video) => (
           <Card
             key={video.id}
-            imagen={video.urlImagen}
-            titulo={video.titulo}
-            descripcion={video.descripcion}
+            id={video.id}
+            image={video.urlImage}
+            video={video.urlVideo}
+            title={video.title}
+            category={video.category}
+            description={video.description}
+            onEditSuccess={handleEditSuccess}
             onDelete={() => handleDelete(video.id)}
           />
         ))}
       </CardContainer>
     </StyledSection>
   );
-};
-
-const handleDelete = (id) => {
-  console.log(`Delete video with ID: ${id}`);
-};
+}
 
 Section.propTypes = {
   category: PropTypes.string.isRequired,

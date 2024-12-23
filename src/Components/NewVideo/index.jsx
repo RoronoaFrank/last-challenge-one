@@ -73,11 +73,11 @@ const FormContainer = styled.div`
 const NewVideo = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    titulo: "",
-    categoria: "",
-    urlImagen: "",
+    title: "",
+    category: "",
+    urlImage: "",
     urlVideo: "",
-    descripcion: "",
+    description: "",
   });
   // Manejar los cambios en los inputs
   const handleChange = (e) => {
@@ -93,11 +93,11 @@ const NewVideo = () => {
 
       // Reiniciar el formulario
       setFormData({
-        titulo: "",
-        categoria: "",
-        urlImagen: "",
+        title: "",
+        category: "",
+        urlImage: "",
         urlVideo: "",
-        descripcion: "",
+        description: "",
       });
     } catch (error) {
       console.error("Error al agregar el video:", error);
@@ -112,22 +112,22 @@ const NewVideo = () => {
     <FormContainer>
       <h2>Agregar Nuevo Video</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="titulo">Título</label>
+        <label htmlFor="title">Título</label>
         <input
           type="text"
-          id="titulo"
-          name="titulo"
+          id="title"
+          name="title"
           placeholder="Ingresa el título"
-          value={formData.titulo}
+          value={formData.title}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="categoria">Categoría</label>
+        <label htmlFor="category">Categoría</label>
         <select
-          id="categoria"
-          name="categoria"
-          value={formData.categoria}
+          id="category"
+          name="category"
+          value={formData.category}
           onChange={handleChange}
           required
         >
@@ -142,13 +142,13 @@ const NewVideo = () => {
           </option>
         </select>
 
-        <label htmlFor="urlImagen">URL de Imagen</label>
+        <label htmlFor="urlImage">URL de Imagen</label>
         <input
           type="url"
-          id="urlImagen"
-          name="urlImagen"
+          id="urlImage"
+          name="urlImage"
           placeholder="URL de la imagen"
-          value={formData.urlImagen}
+          value={formData.urlImage}
           onChange={handleChange}
           required
         />
@@ -164,12 +164,12 @@ const NewVideo = () => {
           required
         />
 
-        <label htmlFor="descripcion">Descripción</label>
+        <label htmlFor="description">Descripción</label>
         <textarea
-          id="descripcion"
-          name="descripcion"
+          id="description"
+          name="description"
           placeholder="Escribe una descripción"
-          value={formData.descripcion}
+          value={formData.description}
           onChange={handleChange}
         ></textarea>
 
