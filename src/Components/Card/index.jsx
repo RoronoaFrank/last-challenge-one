@@ -101,9 +101,9 @@ function Card({ id,image, video, title, category, description, onDelete, onEditS
       image={image}
       video={video}
       description={description}
-      onEditSuccess={(updatedVideo) => {
-        console.log("Passing updated video to Section:", updatedVideo);
-        onEditSuccess(updatedVideo);
+      onEditSuccess={(updateCard) => {
+        console.log("Passing updated video to Section:", updateCard);
+        onEditSuccess(updateCard);
         closeModal();
       }}
       />

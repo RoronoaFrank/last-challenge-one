@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Card from "../Card";
-import Api from "../APIs";
 
 const StyledSection = styled.section`
   display: flex;
@@ -26,73 +24,28 @@ const CardContainer = styled.div`
   gap: 1rem;
 `;
 
-function Section({ category }) {
-  const [videos, setVideos] = useState([]);
-  const [fetchTrigger, setFetchTrigger] = useState(false);
+function Section({ category, cards, onUpdateCard }) {
 
-  useEffect(() => {
-    console.log("Videos updated:", videos);
-  }, [videos]);
-
-  useEffect(() => {
-    console.log("Category changed:", category);
-  }, [category]);
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchVideos = async () => {
-      try {
-        const response = await Api.get("/");
-        // Filtrar los videos por categoría
-        const filteredVideos = response.data.filter(
-          (video) => video.category === category
-        );
-        console.log("Fetched videos:", filteredVideos);
-        if (isMounted) {
-          setVideos(filteredVideos);
-        }
-      } catch (error) {
-        console.error("Error fetching videos:", error);
-      }
-    };
-
-    fetchVideos();
-    return () => {
-      isMounted = false;
-    };
-  }, [category,fetchTrigger]);
-
-  const handleEditSuccess = (updatedVideo) => {
-    console.log("HandleEditSuccess received:", updatedVideo);
-    setVideos((prevVideos) => {
-      const updatedVideos = prevVideos.map((video) =>
-        video.id === updatedVideo.id ? { ...video, ...updatedVideo } : video
-      );
-      console.log("Updated videos array:", updatedVideos);
-      return updatedVideos;
-    });
-    setFetchTrigger((prev) => !prev);
-  };
 
   const handleDelete = (id) => {
-    console.log(`Delete video with ID: ${id}`);
+    console.log(`Delete card with ID: ${id}`);
   };
 
   return (
     <StyledSection>
       <SectionTitle>{category}</SectionTitle>
       <CardContainer>
-        {videos.map((video) => (
+        {cards.map((card) => (
           <Card
-            key={video.id}
-            id={video.id}
-            image={video.urlImage}
-            video={video.urlVideo}
-            title={video.title}
-            category={video.category}
-            description={video.description}
-            onEditSuccess={handleEditSuccess}
-            onDelete={() => handleDelete(video.id)}
+            key={card.id}
+            id={card.id}
+            image={card.urlImage}
+            video={card.urlVideo}
+            title={card.title}
+            category={card.category}
+            description={card.description}
+            onEditSuccess={onUpdateCard}
+            onDelete={() => handleDelete(card.id)}
           />
         ))}
       </CardContainer>
@@ -102,6 +55,8 @@ function Section({ category }) {
 
 Section.propTypes = {
   category: PropTypes.string.isRequired,
+  cards: PropTypes.array.isRequired,
+  onUpdateCard: PropTypes.func.isRequired,
 };
 
 export default Section;
