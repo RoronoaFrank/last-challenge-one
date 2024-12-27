@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import BackgroundOne from "../Background";
+import { createContext, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import Api from "../APIs";
 import Section from "../Section";
@@ -10,9 +9,15 @@ const BannerContainer = styled.main`
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
-  background-color: BackgroundOne;
+  background-color: #1a1410;
   height: auto;
 `;
+
+const CardContext = createContext();
+
+export function useCardContext() {
+  return useContext(CardContext);
+}
 
 function Banner() {
   const categories = [
@@ -37,6 +42,16 @@ function Banner() {
     fetchCards();
   }, []);
 
+  const deleteCard = async (id) => {
+    try {
+      await Api.delete(`/${id}`);
+      setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+      console.log(`Card with ID ${id} deleted successfully.`);
+    } catch (error) {
+      console.error("Error deleting card:", error);
+    }
+  };
+
   const updateCard = (updateCard) => {
     setCards((prevCards) =>
       prevCards.map((card) =>
@@ -46,18 +61,20 @@ function Banner() {
   };
 
   return (
-    <CategoryProvider categories={categories}>
-      <BannerContainer>
-        {categories.map((category) => (
-          <Section 
-          key={category} 
-          category={category} 
-          cards={cards.filter((card) => card.category === category)}
-          onUpdateCard={updateCard}
-          />
-        ))}
-      </BannerContainer>
-    </CategoryProvider>
+    <CardContext.Provider value={{ deleteCard }}>
+      <CategoryProvider categories={categories}>
+        <BannerContainer>
+          {categories.map((category) => (
+            <Section
+              key={category}
+              category={category}
+              cards={cards.filter((card) => card.category === category)}
+              onUpdateCard={updateCard}
+            />
+          ))}
+        </BannerContainer>
+      </CategoryProvider>
+    </CardContext.Provider>
   );
 }
 

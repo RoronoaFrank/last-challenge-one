@@ -26,11 +26,6 @@ const CardContainer = styled.div`
 
 function Section({ category, cards, onUpdateCard }) {
 
-
-  const handleDelete = (id) => {
-    console.log(`Delete card with ID: ${id}`);
-  };
-
   return (
     <StyledSection>
       <SectionTitle>{category}</SectionTitle>
@@ -45,7 +40,6 @@ function Section({ category, cards, onUpdateCard }) {
             category={card.category}
             description={card.description}
             onEditSuccess={onUpdateCard}
-            onDelete={() => handleDelete(card.id)}
           />
         ))}
       </CardContainer>

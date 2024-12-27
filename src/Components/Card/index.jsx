@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCardContext } from "../Banner";
 import styled from "styled-components";
 import ModalEditCard from "../ModalEditCard";
 import PropTypes from "prop-types";
@@ -75,11 +76,21 @@ const Button = styled.button`
   }
 `;
 
-function Card({ id,image, video, title, category, description, onDelete, onEditSuccess }) {
+function Card({ id,image, video, title, category, description, onEditSuccess }) {
+  const { deleteCard } = useCardContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handleDelete = () => {
+    const confirmDelete = window.confirm(
+      `¿Estás seguro de que quieres eliminar la tarjeta "${title}"?`
+    );
+    if (confirmDelete) {
+      deleteCard(id);
+    }
+  };
 
   return (
     <>
@@ -89,7 +100,7 @@ function Card({ id,image, video, title, category, description, onDelete, onEditS
         <Description title= {description}>{description}</Description>
         <ButtonsContainer>
           <Button onClick={openModal}>Editar</Button>
-          <Button onClick={onDelete}>Eliminar</Button>
+          <Button onClick={handleDelete}>Eliminar</Button>
         </ButtonsContainer>
       </CardContainer>
       <ModalEditCard 
@@ -117,7 +128,6 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onEditSuccess: PropTypes.func.isRequired,
 };
 
