@@ -99,23 +99,27 @@ const ModalEditCard = ({
 }) => {
   const categories = useCategoryContext();
 
-  const [formData, setFormData] = useState({
-    title,
-    category,
-    image,
-    video,
-    description,
-  });
+  // Estado del formulario inicializado con una función para mayor eficiencia
+  const [formData, setFormData] = useState(() => ({
+    title: title || "",
+    category: category || "",
+    image: image || "",
+    video: video || "",
+    description: description || "",
+  }));
 
   useEffect(() => {
-    setFormData({
-      title,
-      category,
-      image,
-      video,
-      description,
-    });
-  }, [title, category, image, video, description]);
+    if (isOpen) {
+      // Restaurar valores al abrir el modal
+      setFormData({
+        title: title || "",
+        category: category || "",
+        image: image || "",
+        video: video || "",
+        description: description || "",
+      });
+    }
+  }, [isOpen, title, category, image, video, description]);
 
   const handleEdit = (e) => {
     const { name, value } = e.target;
@@ -123,6 +127,17 @@ const ModalEditCard = ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleReset = () => {
+    // Restaurar estado inicial sin usar una key dinámica
+    setFormData({
+      title: title || "",
+      category: category || "",
+      image: image || "",
+      video: video || "",
+      description: description || "",
+    });
   };
 
   const handleSave = async (e) => {
@@ -145,16 +160,10 @@ const ModalEditCard = ({
         className="close"
         onClick={() => {
           onClose();
-          setFormData({
-            title,
-            category,
-            image,
-            video,
-            description,
-          });
+          handleReset();
         }}
       >
-        &times;
+        ×
       </button>
       <h2>Editar Card</h2>
 
@@ -177,11 +186,15 @@ const ModalEditCard = ({
           onChange={handleEdit}
           required
         >
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
+          {categories.length === 0 ? (
+            <option value="">Cargando categorías...</option>
+          ) : (
+            categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))
+          )}
         </select>
 
         <label htmlFor="image">URL de Imagen</label>
@@ -216,19 +229,7 @@ const ModalEditCard = ({
           <button type="submit" className="save">
             Guardar
           </button>
-          <button
-            type="reset"
-            className="reset"
-            onClick={() =>
-              setFormData({
-                title,
-                category,
-                image,
-                video,
-                description,
-              })
-            }
-          >
+          <button type="button" className="reset" onClick={handleReset}>
             Reset
           </button>
         </div>
@@ -236,6 +237,9 @@ const ModalEditCard = ({
     </StylizedDialog>
   );
 };
+
+
+
 
 ModalEditCard.propTypes = {
   isOpen: PropTypes.bool.isRequired,
