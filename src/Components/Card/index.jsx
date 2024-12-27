@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const CardContainer = styled.div`
   width: 430px;
   height: 320px;
-  background-color: #2A2018;
+  background-color: #2a2018;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(74, 103, 65, 0.2);
   display: flex;
@@ -32,14 +32,13 @@ const Thumbnail = styled.div`
 `;
 
 const Title = styled.h3`
-height:10%;
+  height: 10%;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.9rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
-
 `;
 const Description = styled.p`
   font-family: "Courier New", Courier, monospace;
@@ -47,17 +46,15 @@ const Description = styled.p`
   white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height:10%;
+  min-height: 10%;
   margin: 0;
   margin: 0;
-  
 `;
 
 const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  bottom:0%;
-
+  bottom: 0%;
 `;
 
 const Button = styled.button`
@@ -76,7 +73,15 @@ const Button = styled.button`
   }
 `;
 
-function Card({ id,image, video, title, category, description, onEditSuccess }) {
+function Card({
+  id,
+  image,
+  video,
+  title,
+  category,
+  description,
+  onEditSuccess,
+}) {
   const { deleteCard } = useCardContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -96,26 +101,26 @@ function Card({ id,image, video, title, category, description, onEditSuccess }) 
     <>
       <CardContainer>
         <Thumbnail $image={image} alt={`Imagen descriptiva de: ${title}`} />
-        <Title title= {title}>{title}</Title>
-        <Description title= {description}>{description}</Description>
+        <Title title={title}>{title}</Title>
+        <Description title={description}>{description}</Description>
         <ButtonsContainer>
           <Button onClick={openModal}>Editar</Button>
           <Button onClick={handleDelete}>Eliminar</Button>
         </ButtonsContainer>
       </CardContainer>
-      <ModalEditCard 
-      isOpen={isModalOpen} 
-      onClose={closeModal} 
-      id={id}
-      title={title}
-      category={category}
-      image={image}
-      video={video}
-      description={description}
-      onEditSuccess={(updateCard) => {      
-        onEditSuccess(updateCard);
-        closeModal();
-      }}
+      <ModalEditCard
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        id={id}
+        title={title}
+        category={category}
+        image={image}
+        video={video}
+        description={description}
+        onEditSuccess={(updateCard) => {
+          onEditSuccess(updateCard);
+          closeModal();
+        }}
       />
     </>
   );
