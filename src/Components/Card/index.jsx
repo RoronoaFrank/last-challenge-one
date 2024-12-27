@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 const CardContainer = styled.div`
   width: 430px;
   height: 320px;
-  background-color: #1e1e2e;
+  background-color: #2A2018;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(74, 103, 65, 0.2);
   display: flex;
   flex-direction: column;
   gap: 0.5%;
@@ -101,8 +101,7 @@ function Card({ id,image, video, title, category, description, onDelete, onEditS
       image={image}
       video={video}
       description={description}
-      onEditSuccess={(updateCard) => {
-        console.log("Passing updated video to Section:", updateCard);
+      onEditSuccess={(updateCard) => {      
         onEditSuccess(updateCard);
         closeModal();
       }}

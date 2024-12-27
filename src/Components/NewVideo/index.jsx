@@ -132,14 +132,10 @@ const NewVideo = () => {
           required
         >
           <option value="">Selecciona una categoría</option>
-          <option value="Aperturas de Ajedrez">Aperturas de Ajedrez</option>
-          <option value="Tácticas de Ajedrez">Tácticas de Ajedrez</option>
-          <option value="Grandes Maestros y Partidas Históricas">
-            Grandes Maestros y Partidas Históricas
-          </option>
-          <option value="Ajedrez y Entretenimiento/Curiosidades">
-            Ajedrez y Entretenimiento/Curiosidades
-          </option>
+          <option value="El Silmarillion">El Silmarillion</option>
+          <option value="Dragones & Tierra Media">Dragones & Tierra Media</option>
+          <option value="Historias individuales">Historias individuales</option>
+          <option value="Razas de la Tierra Media">Razas de la Tierra Media</option>
         </select>
 
         <label htmlFor="urlImage">URL de Imagen</label>

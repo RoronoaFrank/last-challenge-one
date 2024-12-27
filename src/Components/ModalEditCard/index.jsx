@@ -130,7 +130,6 @@ const ModalEditCard = ({
   };
 
   const handleReset = () => {
-    // Restaurar estado inicial sin usar una key dinámica
     setFormData({
       title: title || "",
       category: category || "",
@@ -145,7 +144,6 @@ const ModalEditCard = ({
     try {
       const updatedCard = { ...formData, id };
       await Api.put(`/${id}`, updatedCard);
-      console.log("Video editado con éxito:", updatedCard);
       onEditSuccess(updatedCard);
       onClose();
     } catch (error) {
@@ -237,9 +235,6 @@ const ModalEditCard = ({
     </StylizedDialog>
   );
 };
-
-
-
 
 ModalEditCard.propTypes = {
   isOpen: PropTypes.bool.isRequired,

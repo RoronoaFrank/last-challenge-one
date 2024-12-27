@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import BackgroundOne from "../Background";
 import styled from "styled-components";
 import Api from "../APIs";
 import Section from "../Section";
@@ -9,16 +10,16 @@ const BannerContainer = styled.main`
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
-  background-color: #f4f4f4;
+  background-color: BackgroundOne;
   height: auto;
 `;
 
 function Banner() {
   const categories = [
-    "Aperturas de Ajedrez",
-    "Tácticas de Ajedrez",
-    "Grandes Maestros y Partidas Históricas",
-    "Ajedrez y Entretenimiento/Curiosidades",
+    "El Silmarillion",
+    "Dragones & Tierra Media",
+    "Historias individuales",
+    "Razas de la Tierra Media",
   ];
 
   const [cards, setCards] = useState([]);
