@@ -9,6 +9,7 @@ const BannerContainer = styled.main`
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
+  padding-top:0.5rem;
   background-color: #1a1410;
   height: auto;
 `;

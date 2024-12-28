@@ -21,7 +21,7 @@ const SectionTitle = styled.h2`
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 function Section({ category, cards, onUpdateCard }) {

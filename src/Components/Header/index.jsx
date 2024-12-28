@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Button from "../Button";
+import ButtonsHeader from "../Buttons";
 
 const HeaderContainer = styled.header`
-  background-color: #0f1624;
+  background-color: #1A1410;
   height: 15%;
   display: flex;
   align-items: center;
@@ -12,9 +12,9 @@ const HeaderContainer = styled.header`
 `;
 
 const StyledTitle = styled.h1`
-  font-family: "Space Grotesk", serif;
+  font-family: "Cinzel Decorative", serif;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #C9A959;
 `;
 
 const ButtonContainer = styled.nav`
@@ -25,13 +25,13 @@ const ButtonContainer = styled.nav`
 function Header() {
   return (
     <HeaderContainer>
-      <StyledTitle>Chess Gallery</StyledTitle>
+      <StyledTitle>Tolkien Gallery</StyledTitle>
       <ButtonContainer>
         <Link to="/">
-        <Button>Home</Button>
+        <ButtonsHeader>Home</ButtonsHeader>
         </Link>
         <Link to="/new-video">
-          <Button>Nuevo Video</Button>
+          <ButtonsHeader>Nuevo Video</ButtonsHeader>
         </Link>
       </ButtonContainer>
     </HeaderContainer>

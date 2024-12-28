@@ -5,8 +5,8 @@ import ModalEditCard from "../ModalEditCard";
 import PropTypes from "prop-types";
 
 const CardContainer = styled.div`
-  width: 430px;
-  height: 320px;
+  width: 400px;
+  height: 300px;
   background-color: #2a2018;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(74, 103, 65, 0.2);
