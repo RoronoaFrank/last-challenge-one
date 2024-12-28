@@ -65,7 +65,7 @@ function Banner() {
   return (
     <CardContext.Provider value={{ deleteCard }}>
       <CategoryProvider categories={categories}>
-        <MainBanner />
+      <MainBanner cards={cards} />
         <BannerContainer>
           {categories.map((category) => (
             <Section
