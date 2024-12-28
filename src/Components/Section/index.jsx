@@ -6,26 +6,25 @@ const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background-color: #ffffff;
+  background-color: #1A1410;
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled.h2`
+  font-family: "Cinzel", sans-serif;
   font-size: 1.5rem;
-  color: #2a2a42;
+  color: #C9A959;
   margin: 0;
 `;
 
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
 `;
 
 function Section({ category, cards, onUpdateCard }) {
-
   return (
     <StyledSection>
       <SectionTitle>{category}</SectionTitle>

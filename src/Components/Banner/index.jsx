@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import Api from "../APIs";
+import MainBanner from "../MainBanner";
 import Section from "../Section";
 import { CategoryProvider } from "../CategoryContext";
 
@@ -10,7 +11,7 @@ const BannerContainer = styled.main`
   gap: 2rem;
   padding: 2rem;
   padding-top:0.5rem;
-  background-color: #1a1410;
+  background-color:  #1A1410;
   height: auto;
 `;
 
@@ -64,6 +65,7 @@ function Banner() {
   return (
     <CardContext.Provider value={{ deleteCard }}>
       <CategoryProvider categories={categories}>
+        <MainBanner />
         <BannerContainer>
           {categories.map((category) => (
             <Section
