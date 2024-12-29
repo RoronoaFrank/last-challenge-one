@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CategoryProvider } from "./Components/CategoryContext";
 import GlobalStyles from "./Components/GlobalStyles";
 import BackgroundOne from "./Components/Background";
 import Header from "./Components/Header";
@@ -8,17 +9,19 @@ import NewVideo from "./Components/NewVideo";
 
 function App() {
   return (
-    <Router>
-      <GlobalStyles />
-      <BackgroundOne>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Banner />} />
-          <Route path="/new-video" element={<NewVideo />} />
-        </Routes>
-        <Footer />
-      </BackgroundOne>
-    </Router>
+    <CategoryProvider>
+      <Router>
+        <GlobalStyles />
+        <BackgroundOne>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Banner />} />
+            <Route path="/new-video" element={<NewVideo />} />
+          </Routes>
+          <Footer />
+        </BackgroundOne>
+      </Router>
+    </CategoryProvider>
   );
 }
 

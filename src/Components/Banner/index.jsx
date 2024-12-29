@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import useCategoryContext from "../CustomHooks/useCategoryContext";
 import { getCards, deleteCard } from '../APIs';
 import styled from "styled-components";
 import MainBanner from "../MainBanner";
 import Section from "../Section";
-import { CategoryProvider } from "../CategoryContext";
+
 
 
 const BannerContainer = styled.main`
@@ -23,14 +24,9 @@ export function useCardContext() {
 }
 
 function Banner() {
-  const categories = [
-    "El Silmarillion",
-    "Dragones & Tierra Media",
-    "Historias individuales",
-    "Razas de la Tierra Media",
-  ];
 
   const [cards, setCards] = useState([]);
+  const { categories } = useCategoryContext();
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -64,19 +60,17 @@ function Banner() {
 
   return (
     <CardContext.Provider value={{ deleteCard: handleDeleteCard }}>
-      <CategoryProvider categories={categories}>
       <MainBanner cards={cards} />
         <BannerContainer>
           {categories.map((category) => (
             <Section
-              key={category}
-              category={category}
-              cards={cards.filter((card) => card.category === category)}
+              key={category.name}
+              category={category.name}
+              cards={cards.filter((card) => card.category === category.name)}
               onUpdateCard={updateCard}
             />
           ))}
         </BannerContainer>
-      </CategoryProvider>
     </CardContext.Provider>
   );
 }

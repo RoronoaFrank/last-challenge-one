@@ -133,7 +133,7 @@ const NewVideo = () => {
           required
         >
           <option value="">Selecciona una categoría</option>
-          <option value="El Silmarillion">El Silmarillion</option>
+          <option value="Origenes">Origenes</option>
           <option value="Dragones & Tierra Media">Dragones & Tierra Media</option>
           <option value="Historias individuales">Historias individuales</option>
           <option value="Razas de la Tierra Media">Razas de la Tierra Media</option>
