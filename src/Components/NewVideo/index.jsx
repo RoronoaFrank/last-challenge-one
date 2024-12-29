@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { postCard } from "../APIs";
 import styled from "styled-components";
-import Api from "../APIs";
+
 
 const FormContainer = styled.div`
   max-width: 600px;
@@ -88,7 +89,7 @@ const NewVideo = () => {
     e.preventDefault();
     try {
       // Enviar los datos al servidor
-      await Api.post("/", formData);
+      await postCard(formData);
       alert("Video agregado exitosamente");
 
       // Reiniciar el formulario

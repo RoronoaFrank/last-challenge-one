@@ -20,14 +20,15 @@ const Slide = styled.div`
   width: 100%;
   position: absolute;
   top: 0;
-  left: ${({ active }) => (active ? "0" : "100%")};
+  left: ${({ $active }) => ($active ? "0" : "100%")};
   transition: all 0.5s ease-in-out;
-  background: ${({ background }) =>
-    background ? `url(${background}) no-repeat center/cover` : "#333"};
+  background: ${({ $background }) =>
+    $background ? `url(${$background}) no-repeat center/cover` : "#333"};
   color: white;
   padding: 1.5rem;
   text-align: center;
 `;
+
 
 const CategoryTitle = styled.h2`
   font-size: 2rem;
@@ -98,7 +99,10 @@ function MainBanner({ cards }) {
   return (
     <BannerWrapper>
       {slides.map((slide, index) => (
-        <Slide key={slide.category} active={index === currentIndex} background={slide.background}>
+        <Slide 
+        key={slide.category} 
+        $active={index === currentIndex} 
+        $background={slide.background}>
           <CategoryTitle>{slide.category}</CategoryTitle>
           <Description>{slide.description}</Description>
         </Slide>

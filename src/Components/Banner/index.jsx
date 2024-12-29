@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { getCards, deleteCard } from '../APIs';
 import styled from "styled-components";
-import Api from "../APIs";
 import MainBanner from "../MainBanner";
 import Section from "../Section";
 import { CategoryProvider } from "../CategoryContext";
+
 
 const BannerContainer = styled.main`
   display: flex;
@@ -34,8 +35,8 @@ function Banner() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await Api.get("/");
-        setCards(response.data);
+        const data = await getCards();
+        setCards(data);
       } catch (error) {
         console.error("Error fetching cards:", error);
       }
@@ -44,11 +45,10 @@ function Banner() {
     fetchCards();
   }, []);
 
-  const deleteCard = async (id) => {
+  const handleDeleteCard = async (id) => {
     try {
-      await Api.delete(`/${id}`);
+      await deleteCard(id); // Usamos la función centralizada para eliminar
       setCards((prevCards) => prevCards.filter((card) => card.id !== id));
-      console.log(`Card with ID ${id} deleted successfully.`);
     } catch (error) {
       console.error("Error deleting card:", error);
     }
@@ -63,7 +63,7 @@ function Banner() {
   };
 
   return (
-    <CardContext.Provider value={{ deleteCard }}>
+    <CardContext.Provider value={{ deleteCard: handleDeleteCard }}>
       <CategoryProvider categories={categories}>
       <MainBanner cards={cards} />
         <BannerContainer>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
+import { updateCard } from "../APIs";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
-import Api from "../APIs";
 import PropTypes from "prop-types";
 
 const StylizedDialog = styled.dialog`
@@ -97,7 +97,10 @@ const ModalEditCard = ({
   description,
   onEditSuccess,
 }) => {
-  const categories = useCategoryContext();
+  const { categories}  = useCategoryContext();
+  const categoryNames = categories.map((category) => category.name);
+
+  const safeCategories = Array.isArray(categoryNames) ? categoryNames : [];
 
   // Estado del formulario inicializado con una función para mayor eficiencia
   const [formData, setFormData] = useState(() => ({
@@ -143,7 +146,7 @@ const ModalEditCard = ({
     e.preventDefault();
     try {
       const updatedCard = { ...formData, id };
-      await Api.put(`/${id}`, updatedCard);
+      await updateCard(id, updatedCard); 
       onEditSuccess(updatedCard);
       onClose();
     } catch (error) {
@@ -184,15 +187,15 @@ const ModalEditCard = ({
           onChange={handleEdit}
           required
         >
-          {categories.length === 0 ? (
-            <option value="">Cargando categorías...</option>
-          ) : (
-            categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))
-          )}
+          {safeCategories.length === 0 ? (
+    <option value="">Cargando categorías...</option>
+  ) : (
+    safeCategories.map((safeCategories) => (
+      <option key={safeCategories} value={safeCategories}>
+        {safeCategories}
+      </option>
+    ))
+  )}
         </select>
 
         <label htmlFor="image">URL de Imagen</label>
