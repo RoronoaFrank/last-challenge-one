@@ -5,13 +5,13 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const StylizedDialog = styled.dialog`
-  width: 400px;
-  height: 500px;
-  border: none;
+  width: 450px;
+  height: 520px;
+  border: 2px solid #8b4513;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(26, 20, 16, 0.4);
   padding: 1rem;
-  background-color: #ffffff;
+  background-color: #2a2018;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -19,24 +19,38 @@ const StylizedDialog = styled.dialog`
   z-index: 1000;
   margin: 0;
 
+  &::backdrop {
+    background: rgba(26, 20, 16, 0.85);
+  }
+
   h2 {
     margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-align: center;
-    color: #2a2a42;
+    color: #c9a959;
+    font-family: "Cinzel", serif;
+    letter-spacing: 1px;
   }
 
   .close {
-    background-color: #ff4c4c;
+    background-color: #8b4513;
     width: 35px;
     height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    position: fixed;
+    color: #e8dcc4;
+    position: absolute;
     top: 10px;
     right: 10px;
+    border-radius: 50%;
+    border: 1px solid #c9a959;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #a65d3f;
+      transform: rotate(90deg);
+    }
   }
 
   form {
@@ -47,42 +61,157 @@ const StylizedDialog = styled.dialog`
 
   label {
     font-size: 0.9rem;
-    font-weight: bold;
-    color: #555;
+    font-weight: 500;
+    color: #e8dcc4;
+    font-family: "Alegreya", serif;
   }
 
-  input,
   textarea {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    background-color: #1a1410;
+    border: 1px solid #8b4513;
     border-radius: 4px;
     font-size: 1rem;
+    font-family: "Alegreya Sans", sans-serif;
+    color: #e8dcc4;
     resize: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #c9a959;
+      box-shadow: 0 0 5px rgba(201, 169, 89, 0.3);
+    }
+
+    &::placeholder {
+      color: #a69276;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: rgba(42, 32, 24, 0.3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #c9a959;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #e2c792;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgba(139, 69, 19, 0.2);
+      border-radius: 4px;
+    }
   }
 
-  button {
-    padding: 0.7rem;
-    font-size: 1rem;
-    border: none;
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #1a1410;
+    border: 1px solid #8b4513;
     border-radius: 4px;
+    font-size: 1rem;
+    font-family: "Alegreya Sans", sans-serif;
+    color: #e8dcc4;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #c9a959;
+      box-shadow: 0 0 5px rgba(201, 169, 89, 0.3);
+    }
+
+    &::placeholder {
+      color: #a69276;
+    }
+  }
+
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #1a1410;
+    border: 1px solid #8b4513;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: "Alegreya Sans", sans-serif;
+    color: #e8dcc4;
     cursor: pointer;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, #c9a959 50%),
+      linear-gradient(135deg, #c9a959 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #c9a959;
+      box-shadow: 0 0 5px rgba(201, 169, 89, 0.3);
+    }
+
+    &:hover {
+      border-color: #c9a959;
+    }
   }
 
-  .save {
-    background-color: #2a2a42;
-    color: white;
+  /* Estilos específicos para las opciones del select */
+  select option {
+    background-color: #1a1410 !important;
+    color: #e8dcc4 !important;
+    padding: 0.8rem;
+    font-family: "Alegreya Sans", sans-serif;
   }
 
-  .reset {
-    background-color: #f5f5f5;
-    color: #555;
+  select option:hover,
+  select option:focus,
+  select option:active,
+  select option:checked {
+    background-color: #2a2018 !important;
+    color: #c9a959 !important;
   }
 
   .button-group {
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
+  }
+
+  button.save,
+  button.reset {
+    padding: 0.7rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Alegreya Sans", sans-serif;
+    transition: all 0.3s ease;
+    min-width: 100px;
+  }
+
+  .save {
+    background-color: #4a6741;
+    color: #e8dcc4;
+
+    &:hover {
+      background-color: #5b7d52;
+      transform: translateY(-2px);
+    }
+  }
+
+  .reset {
+    background-color: #8b4513;
+    color: #e8dcc4;
+
+    &:hover {
+      background-color: #a65d3f;
+      transform: translateY(-2px);
+    }
   }
 `;
 
@@ -97,7 +226,7 @@ const ModalEditCard = ({
   description,
   onEditSuccess,
 }) => {
-  const { categories}  = useCategoryContext();
+  const { categories } = useCategoryContext();
   const categoryNames = categories.map((category) => category.name);
 
   const safeCategories = Array.isArray(categoryNames) ? categoryNames : [];
@@ -146,7 +275,7 @@ const ModalEditCard = ({
     e.preventDefault();
     try {
       const updatedCard = { ...formData, id };
-      await updateCard(id, updatedCard); 
+      await updateCard(id, updatedCard);
       onEditSuccess(updatedCard);
       onClose();
     } catch (error) {
@@ -188,14 +317,14 @@ const ModalEditCard = ({
           required
         >
           {safeCategories.length === 0 ? (
-    <option value="">Cargando categorías...</option>
-  ) : (
-    safeCategories.map((safeCategories) => (
-      <option key={safeCategories} value={safeCategories}>
-        {safeCategories}
-      </option>
-    ))
-  )}
+            <option value="">Cargando categorías...</option>
+          ) : (
+            safeCategories.map((safeCategories) => (
+              <option key={safeCategories} value={safeCategories}>
+                {safeCategories}
+              </option>
+            ))
+          )}
         </select>
 
         <label htmlFor="image">URL de Imagen</label>
