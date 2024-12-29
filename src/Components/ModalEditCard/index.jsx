@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { updateCard } from "../APIs";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
+import CustomSelect from "./CustomSelect";
 import PropTypes from "prop-types";
 
 const StylizedDialog = styled.dialog`
@@ -128,52 +129,6 @@ const StylizedDialog = styled.dialog`
     &::placeholder {
       color: #a69276;
     }
-  }
-
-  select {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #1a1410;
-    border: 1px solid #8b4513;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: "Alegreya Sans", sans-serif;
-    color: #e8dcc4;
-    cursor: pointer;
-    appearance: none;
-    background-image: linear-gradient(45deg, transparent 50%, #c9a959 50%),
-      linear-gradient(135deg, #c9a959 50%, transparent 50%);
-    background-position: calc(100% - 20px) calc(1em + 2px),
-      calc(100% - 15px) calc(1em + 2px);
-    background-size: 5px 5px, 5px 5px;
-    background-repeat: no-repeat;
-    transition: border-color 0.3s ease;
-
-    &:focus {
-      outline: none;
-      border-color: #c9a959;
-      box-shadow: 0 0 5px rgba(201, 169, 89, 0.3);
-    }
-
-    &:hover {
-      border-color: #c9a959;
-    }
-  }
-
-  /* Estilos específicos para las opciones del select */
-  select option {
-    background-color: #1a1410 !important;
-    color: #e8dcc4 !important;
-    padding: 0.8rem;
-    font-family: "Alegreya Sans", sans-serif;
-  }
-
-  select option:hover,
-  select option:focus,
-  select option:active,
-  select option:checked {
-    background-color: #2a2018 !important;
-    color: #c9a959 !important;
   }
 
   .button-group {
@@ -308,24 +263,18 @@ const ModalEditCard = ({
           required
         />
 
-        <label htmlFor="category">Categoria</label>
-        <select
-          id="category"
-          name="category"
+        <label htmlFor="category">Categoría</label>
+        <CustomSelect
+          options={
+            safeCategories.length === 0
+              ? ["Cargando categorías..."]
+              : safeCategories
+          }
           value={formData.category}
-          onChange={handleEdit}
-          required
-        >
-          {safeCategories.length === 0 ? (
-            <option value="">Cargando categorías...</option>
-          ) : (
-            safeCategories.map((safeCategories) => (
-              <option key={safeCategories} value={safeCategories}>
-                {safeCategories}
-              </option>
-            ))
-          )}
-        </select>
+          onChange={(selectedOption) =>
+            handleEdit({ target: { name: "category", value: selectedOption } })
+          }
+        />
 
         <label htmlFor="image">URL de Imagen</label>
         <input

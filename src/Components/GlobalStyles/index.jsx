@@ -123,6 +123,16 @@ select {
   text-transform: none;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+}
+
 button,
 [type="button"],
 [type="reset"],
