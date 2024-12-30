@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CategoryProvider } from "./Components/CategoryContext";
+import { CategoryProvider } from "./Components/CustomHooks/CategoryContext";
 import GlobalStyles from "./Components/GlobalStyles";
 import BackgroundOne from "./Components/Background";
 import Header from "./Components/Header";
