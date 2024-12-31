@@ -67,7 +67,7 @@ const Button = styled.button`
   }
 `;
 
-function MainBanner({ cards }) {
+function MainBanner({ cards, validCategories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slides, setSlides] = useState([]);
 
@@ -75,8 +75,10 @@ function MainBanner({ cards }) {
     if (cards.length > 0) {
       const groupedSlides = cards.reduce((acc, card) => {
         const { category } = card;
-        if (!acc[category]) acc[category] = [];
-        acc[category].push(card);
+        if (validCategories.includes(category)) {
+          if (!acc[category]) acc[category] = [];
+          acc[category].push(card);
+        }
         return acc;
       }, {});
 
@@ -91,7 +93,7 @@ function MainBanner({ cards }) {
 
       setSlides(slidesArray);
     }
-  }, [cards]);
+  }, [cards, validCategories]);
 
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
@@ -117,6 +119,7 @@ function MainBanner({ cards }) {
 
 MainBanner.propTypes = {
   cards: PropTypes.array.isRequired,
+  validCategories: PropTypes.array.isRequired,
 };
 
 export default MainBanner;

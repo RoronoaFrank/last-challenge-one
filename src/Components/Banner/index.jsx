@@ -1,19 +1,17 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
-import { getCards, deleteCard } from '../APIs';
+import { getCards, deleteCard } from "../APIs";
 import styled from "styled-components";
 import MainBanner from "../MainBanner";
 import Section from "../Section";
-
-
 
 const BannerContainer = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
-  padding-top:0.5rem;
-  background-color:  #1A1410;
+  padding-top: 0.5rem;
+  background-color: #1a1410;
   height: auto;
 `;
 
@@ -24,7 +22,6 @@ export function useCardContext() {
 }
 
 function Banner() {
-
   const [cards, setCards] = useState([]);
   const { categories } = useCategoryContext();
 
@@ -60,17 +57,20 @@ function Banner() {
 
   return (
     <CardContext.Provider value={{ deleteCard: handleDeleteCard }}>
-      <MainBanner cards={cards} />
-        <BannerContainer>
-          {categories.map((category) => (
-            <Section
-              key={category.name}
-              category={category.name}
-              cards={cards.filter((card) => card.category === category.name)}
-              onUpdateCard={updateCard}
-            />
-          ))}
-        </BannerContainer>
+      <MainBanner
+        cards={cards}
+        validCategories={categories.map((category) => category.name)}
+      />
+      <BannerContainer>
+        {categories.map((category) => (
+          <Section
+            key={category.name}
+            category={category.name}
+            cards={cards.filter((card) => card.category === category.name)}
+            onUpdateCard={updateCard}
+          />
+        ))}
+      </BannerContainer>
     </CardContext.Provider>
   );
 }
