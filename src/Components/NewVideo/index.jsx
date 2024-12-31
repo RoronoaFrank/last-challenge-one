@@ -5,121 +5,163 @@ import styled from "styled-components";
 
 
 const FormContainer = styled.div`
- width: 90%;
- max-width: 1200px;
- height: 100vh;
- margin: 1rem auto;
- padding: 1rem;
- background-color: #2A2018;
- border-radius: 12px;
- box-shadow: 0 4px 12px rgba(74, 103, 65, 0.5);
- color: #E8DCC4;
- border: 1px solid #8B4513;
+  width: 90%;
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #2A2018;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(74, 103, 65, 0.3);
+  color: #E8DCC4;
+  border: 1px solid #8B4513;
+`;
 
- h2 {
-   font-family: 'Cinzel', serif;
-   text-align: center;
-   margin-bottom: 1.5rem;
-   color: #C9A959;
-   font-size: 2rem;
-   letter-spacing: 1px;
- }
+const FormTitle = styled.h2`
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: 'Cinzel Decorative', serif;
+  color: #C9A959;
+  font-size: 2rem;
+  letter-spacing: 1px;
+`;
 
- form {
-   display: grid;
-   grid-template-columns: repeat(2, 1fr);
-   gap: 1rem;
+const Form = styled.form`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+`;
 
-   label {
-     font-family: 'Alegreya', serif;
-     margin-top: 0.5rem;
-     color: #C9A959;
-   }
+const LeftColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
-   input,
-   textarea,
-   select {
-     width: 100%;
-     margin-top: 0.5rem;
-     padding: 0.5rem;
-     border: 1px solid #8B4513;
-     border-radius: 6px;
-     background-color: #1A1410;
-     color: #E8DCC4;
-     font-family: 'Alegreya Sans', sans-serif;
-     transition: all 0.3s ease;
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-     &:focus {
-       border-color: #C9A959;
-       outline: none;
-       box-shadow: 0 0 8px rgba(201, 169, 89, 0.3);
-     }
-   }
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+`;
 
-   textarea {
-     grid-column: span 2;
-     min-height: 100px;
-     resize: none;
+const Label = styled.label`
+  font-family: 'Cinzel', serif;
+  color: #C9A959;
+  font-size: 1rem;
+`;
 
-     &::-webkit-scrollbar {
-      width: 8px;
-      background-color: rgba(42, 32, 24, 0.3);
+const Input = styled.input`
+  padding: 0.8rem;
+  border: 1px solid #8B4513;
+  border-radius: 6px;
+  background-color: #1A1410;
+  color: #E8DCC4;
+  font-family: 'Alegreya', serif;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #C9A959;
+    box-shadow: 0 0 8px rgba(201, 169, 89, 0.3);
+  }
+`;
+
+const Select = styled.select`
+  padding: 0.8rem;
+  border: 1px solid #8B4513;
+  border-radius: 6px;
+  background-color: #1A1410;
+  color: #E8DCC4;
+  font-family: 'Alegreya', serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #C9A959;
+  }
+
+  option {
+    background-color: #2A2018;
+  }
+`;
+
+const TextArea = styled.textarea`
+  height: 300px;
+  padding: 1rem;
+  border: 1px solid #8B4513;
+  border-radius: 6px;
+  background-color: #1A1410;
+  color: #E8DCC4;
+  font-family: 'Alegreya', serif;
+  resize: none;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #C9A959;
+    box-shadow: 0 0 8px rgba(201, 169, 89, 0.3);
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(42, 32, 24, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #C9A959;
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: #E2C792;
     }
+  }
+`;
 
-    &::-webkit-scrollbar-thumb {
-      background-color: #c9a959;
-      border-radius: 4px;
+const ButtonGroup = styled.div`
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 2rem;
+`;
 
-      &:hover {
-        background-color: #e2c792;
-      }
+const Button = styled.button`
+  padding: 0.8rem 2.5rem;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Alegreya Sans', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.save {
+    background-color: #4A6741;
+    color: #E8DCC4;
+
+    &:hover {
+      background-color: #5B7D52;
+      transform: translateY(-2px);
     }
+  }
 
-    &::-webkit-scrollbar-track {
-      background-color: rgba(139, 69, 19, 0.2);
-      border-radius: 4px;
+  &.cancel {
+    background-color: #8B4513;
+    color: #E8DCC4;
+
+    &:hover {
+      background-color: #A65D3F;
+      transform: translateY(-2px);
     }
-   }
+  }
 
-   .button-group {
-     grid-column: span 2;
-     display: flex;
-     justify-content: center;
-     gap: 4rem;
-     margin-top: 2rem;
-
-     button {
-       padding: 0.8rem 1rem;
-       border: none;
-       border-radius: 6px;
-       cursor: pointer;
-       transition: all 0.3s ease;
-       font-family: 'Alegreya Sans', sans-serif;
-       font-size: 1rem;
-       min-width: 150px;
-     }
-
-     .save {
-       background-color: #4A6741;
-       color: #E8DCC4;
-
-       &:hover {
-         background-color: #5B7D52;
-         transform: translateY(-2px);
-       }
-     }
-
-     .cancel {
-       background-color: #8B4513;
-       color: #E8DCC4;
-
-       &:hover {
-         background-color: #A65D3F;
-         transform: translateY(-2px);
-       }
-     }
-   }
- }
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 const NewVideo = () => {
@@ -162,10 +204,12 @@ const NewVideo = () => {
 
   return (
     <FormContainer>
-      <h2>Agregar Nuevo Video</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Título</label>
-        <input
+  <FormTitle>Agregar Nuevo Video</FormTitle>
+  <Form onSubmit={handleSubmit}>
+    <LeftColumn>
+      <FormGroup>
+        <Label htmlFor="title">Título</Label>
+        <Input
           type="text"
           id="title"
           name="title"
@@ -174,9 +218,11 @@ const NewVideo = () => {
           onChange={handleChange}
           required
         />
+      </FormGroup>
 
-        <label htmlFor="category">Categoría</label>
-        <select
+      <FormGroup>
+        <Label htmlFor="category">Categoría</Label>
+        <Select
           id="category"
           name="category"
           value={formData.category}
@@ -188,10 +234,12 @@ const NewVideo = () => {
           <option value="Dragones & Tierra Media">Dragones & Tierra Media</option>
           <option value="Historias individuales">Historias individuales</option>
           <option value="Razas de la Tierra Media">Razas de la Tierra Media</option>
-        </select>
+        </Select>
+      </FormGroup>
 
-        <label htmlFor="urlImage">URL de Imagen</label>
-        <input
+      <FormGroup>
+        <Label htmlFor="urlImage">URL de Imagen</Label>
+        <Input
           type="url"
           id="urlImage"
           name="urlImage"
@@ -200,9 +248,11 @@ const NewVideo = () => {
           onChange={handleChange}
           required
         />
+      </FormGroup>
 
-        <label htmlFor="urlVideo">URL de Video</label>
-        <input
+      <FormGroup>
+        <Label htmlFor="urlVideo">URL de Video</Label>
+        <Input
           type="url"
           id="urlVideo"
           name="urlVideo"
@@ -211,26 +261,32 @@ const NewVideo = () => {
           onChange={handleChange}
           required
         />
+      </FormGroup>
+    </LeftColumn>
 
-        <label htmlFor="description">Descripción</label>
-        <textarea
+    <RightColumn>
+      <FormGroup>
+        <Label htmlFor="description">Descripción</Label>
+        <TextArea
           id="description"
           name="description"
           placeholder="Escribe una descripción"
           value={formData.description}
           onChange={handleChange}
-        ></textarea>
+        />
+      </FormGroup>
+    </RightColumn>
 
-        <div className="button-group">
-          <button type="submit" className="save">
-            Guardar
-          </button>
-          <button type="button" className="cancel" onClick={handleCancel}>
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </FormContainer>
+    <ButtonGroup>
+      <Button type="submit" className="save">
+        Guardar
+      </Button>
+      <Button type="button" className="cancel" onClick={handleCancel}>
+        Cancelar
+      </Button>
+    </ButtonGroup>
+  </Form>
+</FormContainer>
   );
 };
 
