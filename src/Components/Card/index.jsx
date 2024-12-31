@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCardContext } from "../Banner";
 import styled from "styled-components";
+import ModalPlayer from "../ModalPlayer";
 import ModalEditCard from "../ModalEditCard";
 import PropTypes from "prop-types";
 
@@ -143,9 +144,23 @@ function Card({
 }) {
   const { deleteCard } = useCardContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlayerModalOpen, setIsPlayerModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openPlayerModal = () => setIsPlayerModalOpen(true);
+  const closePlayerModal = () => setIsPlayerModalOpen(false);
+
+  const handleCardClick = (event) => {
+    // Verifica si el clic no fue en un botón
+    if (
+      !event.target.closest("button") &&
+      !event.target.closest("[data-prevent-click]")
+    ) {
+      openPlayerModal();
+    }
+  };
 
   const handleDelete = () => {
     const confirmDelete = window.confirm(
@@ -158,7 +173,7 @@ function Card({
 
   return (
     <>
-      <CardContainer>
+      <CardContainer onClick={handleCardClick}>
         <ThumbnailWrapper>
           <Thumbnail $image={image} alt={`Imagen descriptiva de: ${title}`} />
           <Description >{description}</Description>
@@ -169,6 +184,12 @@ function Card({
           <Button onClick={handleDelete}>Eliminar</Button>
         </ButtonsContainer>
       </CardContainer>
+      <ModalPlayer
+        isOpen={isPlayerModalOpen}
+        onClose={closePlayerModal}
+        video={video}
+        description={description}
+      />
       <ModalEditCard
         isOpen={isModalOpen}
         onClose={closeModal}
