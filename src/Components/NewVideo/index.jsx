@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postCard } from "../APIs";
+import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
 
 
@@ -166,6 +167,7 @@ const Button = styled.button`
 
 const NewVideo = () => {
   const navigate = useNavigate();
+  const { categories } = useCategoryContext();
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -230,10 +232,11 @@ const NewVideo = () => {
           required
         >
           <option value="">Selecciona una categoría</option>
-          <option value="Origenes">Origenes</option>
-          <option value="Dragones & Tierra Media">Dragones & Tierra Media</option>
-          <option value="Historias individuales">Historias individuales</option>
-          <option value="Razas de la Tierra Media">Razas de la Tierra Media</option>
+              {categories.map((category) => (
+                <option key={category.name} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
         </Select>
       </FormGroup>
 
