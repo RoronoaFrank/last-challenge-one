@@ -1,27 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postCard } from "../APIs";
+import CustomSelect from "../ModalEditCard/CustomSelect";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
-
 
 const FormContainer = styled.div`
   width: 90%;
   max-width: 1200px;
   margin: 1rem auto;
   padding: 1rem;
-  background-color: #2A2018;
+  background-color: #2a2018;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(74, 103, 65, 0.3);
-  color: #E8DCC4;
-  border: 1px solid #8B4513;
+  color: #e8dcc4;
+  border: 1px solid #8b4513;
 `;
 
 const FormTitle = styled.h2`
   text-align: center;
   margin-bottom: 1rem;
-  font-family: 'Cinzel Decorative', serif;
-  color: #C9A959;
+  font-family: "Cinzel Decorative", serif;
+  color: #c9a959;
   font-size: 2rem;
   letter-spacing: 1px;
 `;
@@ -50,61 +50,41 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  font-family: 'Cinzel', serif;
-  color: #C9A959;
+  font-family: "Cinzel", serif;
+  color: #c9a959;
   font-size: 1rem;
 `;
 
 const Input = styled.input`
   padding: 0.8rem;
-  border: 1px solid #8B4513;
+  border: 1px solid #8b4513;
   border-radius: 6px;
-  background-color: #1A1410;
-  color: #E8DCC4;
-  font-family: 'Alegreya', serif;
+  background-color: #1a1410;
+  color: #e8dcc4;
+  font-family: "Alegreya", serif;
   transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #C9A959;
+    border-color: #c9a959;
     box-shadow: 0 0 8px rgba(201, 169, 89, 0.3);
-  }
-`;
-
-const Select = styled.select`
-  padding: 0.8rem;
-  border: 1px solid #8B4513;
-  border-radius: 6px;
-  background-color: #1A1410;
-  color: #E8DCC4;
-  font-family: 'Alegreya', serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #C9A959;
-  }
-
-  option {
-    background-color: #2A2018;
   }
 `;
 
 const TextArea = styled.textarea`
   height: 300px;
   padding: 1rem;
-  border: 1px solid #8B4513;
+  border: 1px solid #8b4513;
   border-radius: 6px;
-  background-color: #1A1410;
-  color: #E8DCC4;
-  font-family: 'Alegreya', serif;
+  background-color: #1a1410;
+  color: #e8dcc4;
+  font-family: "Alegreya", serif;
   resize: none;
   transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #C9A959;
+    border-color: #c9a959;
     box-shadow: 0 0 8px rgba(201, 169, 89, 0.3);
   }
 
@@ -114,11 +94,11 @@ const TextArea = styled.textarea`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #C9A959;
+    background-color: #c9a959;
     border-radius: 4px;
-    
+
     &:hover {
-      background-color: #E2C792;
+      background-color: #e2c792;
     }
   }
 `;
@@ -135,27 +115,27 @@ const Button = styled.button`
   padding: 0.8rem 2.5rem;
   border: none;
   border-radius: 6px;
-  font-family: 'Alegreya Sans', sans-serif;
+  font-family: "Alegreya Sans", sans-serif;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &.save {
-    background-color: #4A6741;
-    color: #E8DCC4;
+    background-color: #4a6741;
+    color: #e8dcc4;
 
     &:hover {
-      background-color: #5B7D52;
+      background-color: #5b7d52;
       transform: translateY(-2px);
     }
   }
 
   &.cancel {
-    background-color: #8B4513;
-    color: #E8DCC4;
+    background-color: #8b4513;
+    color: #e8dcc4;
 
     &:hover {
-      background-color: #A65D3F;
+      background-color: #a65d3f;
       transform: translateY(-2px);
     }
   }
@@ -168,6 +148,7 @@ const Button = styled.button`
 const NewVideo = () => {
   const navigate = useNavigate();
   const { categories } = useCategoryContext();
+  const categoryNames = categories.map((category) => category.name);
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -178,6 +159,13 @@ const NewVideo = () => {
   // Manejar los cambios en los inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  // Manejar el cambio del CustomSelect
+  const handleCategoryChange = (selectedOption) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      category: selectedOption,
+    }));
   };
   // Manejar el envío del formulario
   const handleSubmit = async (e) => {
@@ -206,90 +194,85 @@ const NewVideo = () => {
 
   return (
     <FormContainer>
-  <FormTitle>Agregar Nuevo Video</FormTitle>
-  <Form onSubmit={handleSubmit}>
-    <LeftColumn>
-      <FormGroup>
-        <Label htmlFor="title">Título</Label>
-        <Input
-          type="text"
-          id="title"
-          name="title"
-          placeholder="Ingresa el título"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-      </FormGroup>
+      <FormTitle>Agregar Nuevo Video</FormTitle>
+      <Form onSubmit={handleSubmit}>
+        <LeftColumn>
+          <FormGroup>
+            <Label htmlFor="title">Título</Label>
+            <Input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Ingresa el título"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
 
-      <FormGroup>
-        <Label htmlFor="category">Categoría</Label>
-        <Select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecciona una categoría</option>
-              {categories.map((category) => (
-                <option key={category.name} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-        </Select>
-      </FormGroup>
+          <FormGroup>
+            <Label htmlFor="category">Categoría</Label>
+            <CustomSelect
+              options={
+                categoryNames.length === 0
+                  ? ["Cargando categorías..."]
+                  : categoryNames
+              }
+              value={formData.category}
+              onChange={handleCategoryChange}
+            />
+          </FormGroup>
 
-      <FormGroup>
-        <Label htmlFor="urlImage">URL de Imagen</Label>
-        <Input
-          type="url"
-          id="urlImage"
-          name="urlImage"
-          placeholder="URL de la imagen"
-          value={formData.urlImage}
-          onChange={handleChange}
-          required
-        />
-      </FormGroup>
+          <FormGroup>
+            <Label htmlFor="urlImage">URL de Imagen</Label>
+            <Input
+              type="url"
+              id="urlImage"
+              name="urlImage"
+              placeholder="URL de la imagen"
+              value={formData.urlImage}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
 
-      <FormGroup>
-        <Label htmlFor="urlVideo">URL de Video</Label>
-        <Input
-          type="url"
-          id="urlVideo"
-          name="urlVideo"
-          placeholder="URL del video"
-          value={formData.urlVideo}
-          onChange={handleChange}
-          required
-        />
-      </FormGroup>
-    </LeftColumn>
+          <FormGroup>
+            <Label htmlFor="urlVideo">URL de Video</Label>
+            <Input
+              type="url"
+              id="urlVideo"
+              name="urlVideo"
+              placeholder="URL del video"
+              value={formData.urlVideo}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
+        </LeftColumn>
 
-    <RightColumn>
-      <FormGroup>
-        <Label htmlFor="description">Descripción</Label>
-        <TextArea
-          id="description"
-          name="description"
-          placeholder="Escribe una descripción"
-          value={formData.description}
-          onChange={handleChange}
-        />
-      </FormGroup>
-    </RightColumn>
+        <RightColumn>
+          <FormGroup>
+            <Label htmlFor="description">Descripción</Label>
+            <TextArea
+              id="description"
+              name="description"
+              placeholder="Escribe una descripción"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </FormGroup>
+        </RightColumn>
 
-    <ButtonGroup>
-      <Button type="submit" className="save">
-        Guardar
-      </Button>
-      <Button type="button" className="cancel" onClick={handleCancel}>
-        Cancelar
-      </Button>
-    </ButtonGroup>
-  </Form>
-</FormContainer>
+        <ButtonGroup>
+          <Button type="submit" className="save">
+            Guardar
+          </Button>
+          <Button type="button" className="cancel" onClick={handleCancel}>
+            Cancelar
+          </Button>
+        </ButtonGroup>
+      </Form>
+    </FormContainer>
   );
 };
 

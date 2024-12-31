@@ -13,11 +13,15 @@ const StyledCustomSelect = styled.div`
     background-color: #1a1410;
     color: #e8dcc4;
     padding: 0.8rem;
-    border: 1px solid #c9a959;
+    border: 1px solid#8b4513;
     border-radius: 0.5rem;
     cursor: pointer;
     text-align: left;
     position: relative;
+
+    &:hover{
+      border-color: #c9a959;
+    }
   }
 
   .custom-dropdown__selected:hover {
