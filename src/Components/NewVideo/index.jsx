@@ -225,6 +225,7 @@ const NewVideo = () => {
           <FormGroup>
             <Label htmlFor="category">Categoría</Label>
             <CustomSelect
+              id="category"
               options={
                 categoryNames.length === 0
                   ? ["Cargando categorías..."]

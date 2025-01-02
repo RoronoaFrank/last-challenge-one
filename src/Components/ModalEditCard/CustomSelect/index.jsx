@@ -86,7 +86,7 @@ const StyledCustomSelect = styled.div`
   }
 `;
 
-const CustomSelect = ({ options, value, onChange }) => {
+const CustomSelect = ({ options, value, onChange, id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -114,35 +114,54 @@ const CustomSelect = ({ options, value, onChange }) => {
 
   return (
     <StyledCustomSelect>
-      <div className="custom-dropdown" ref={dropdownRef}>
+    <div className="custom-dropdown" ref={dropdownRef}>
+      <select
+        id={id} // Asegura que el id esté aquí
+        value={value}
+        onChange={(e) => handleOptionClick(e.target.value)}
+        style={{ display: "none" }} // Oculta el select nativo
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       <div
         className="custom-dropdown__selected"
         onClick={handleToggleDropdown}
+        tabIndex={0}
+        role="button" // Asegura que sea accesible
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-labelledby={id}
       >
-          {value || "Seleccione una opción"}
-        </div>
-        {isOpen && (
-          <ul className="custom-dropdown__options">
-            {options.map((option) => (
-              <li
-                key={option}
-                className="custom-dropdown__option"
-                onClick={() => handleOptionClick(option)}
-              >
-                {option}
-              </li>
-            ))}
-          </ul>
-        )}
+        {value || "Seleccione una opción"}
       </div>
-    </StyledCustomSelect>
+      {isOpen && (
+        <ul className="custom-dropdown__options" role="listbox">
+          {options.map((option) => (
+            <li
+              key={option}
+              className="custom-dropdown__option"
+              onClick={() => handleOptionClick(option)}
+              role="option"
+            >
+              {option}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </StyledCustomSelect>
   );
 };
 
 CustomSelect.propTypes = {
+  id: propTypes.string,
   options: propTypes.array.isRequired,
   value: propTypes.string,
   onChange: propTypes.func.isRequired,
 };
 
-export default CustomSelect;
+export default CustomSelect;  

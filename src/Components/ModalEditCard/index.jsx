@@ -265,6 +265,7 @@ const ModalEditCard = ({
 
         <label htmlFor="category">Categoría</label>
         <CustomSelect
+          id="category"
           options={
             safeCategories.length === 0
               ? ["Cargando categorías..."]

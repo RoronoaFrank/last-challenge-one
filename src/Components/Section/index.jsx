@@ -5,16 +5,17 @@ import Card from "../Card";
 const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: clamp(1rem, 3vw, 1.5rem);
   background-color: #1A1410;
   border-radius: 8px;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vw, 1rem);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
 `;
 
 const SectionTitle = styled.h2`
   font-family: "Cinzel", sans-serif;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   color: #C9A959;
   margin: 0;
 `;
@@ -22,6 +23,15 @@ const SectionTitle = styled.h2`
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+
+  /* Centrado solo en móvil */
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    justify-content: flex-start;
+  }
 `;
 
 function Section({ category, cards, onUpdateCard }) {
