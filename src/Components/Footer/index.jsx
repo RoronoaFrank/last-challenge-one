@@ -10,7 +10,7 @@ const StyledFooter = styled.footer`
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
 `;
 
-const FooterText = styled.p`
+const FooterText = styled.section`
   font-family: "Alegreya", serif;
   margin: 0;
   font-size: 1rem;
@@ -55,10 +55,10 @@ const Footer = () => {
   return (
     <StyledFooter>
       <FooterText>
-        <div className="copyright-info">
+        <p className="copyright-info">
           <span>Tolkien Gallery</span> © {new Date().getFullYear()}
-        </div>
-        <div className="copyright-info">
+        </p>
+        <p className="copyright-info">
           | Developed by {""}
           <a
             href="https://github.com/tu-usuario"
@@ -67,7 +67,7 @@ const Footer = () => {
           >
             Franck Devv
           </a>
-        </div>
+        </p>
       </FooterText>
     </StyledFooter>
   );
