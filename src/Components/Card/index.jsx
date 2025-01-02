@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const CardContainer = styled.div`
   flex: 0 0 320px;
   width: 320px;
-  height: 260px;
+  height: 280px;
   background-color: #2a2018;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(74, 103, 65, 0.5);

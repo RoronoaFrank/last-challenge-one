@@ -116,10 +116,10 @@ const CustomSelect = ({ options, value, onChange, id }) => {
     <StyledCustomSelect>
     <div className="custom-dropdown" ref={dropdownRef}>
       <select
-        id={id} // Asegura que el id esté aquí
+        id={id}
         value={value}
         onChange={(e) => handleOptionClick(e.target.value)}
-        style={{ display: "none" }} // Oculta el select nativo
+        style={{ display: "none" }}
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -131,7 +131,7 @@ const CustomSelect = ({ options, value, onChange, id }) => {
         className="custom-dropdown__selected"
         onClick={handleToggleDropdown}
         tabIndex={0}
-        role="button" // Asegura que sea accesible
+        role="button"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-labelledby={id}
