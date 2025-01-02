@@ -8,8 +8,10 @@ background-color: #2A2018;
   height: 40px;
   border-color: white;
   border-radius: 5%;
+  padding: 0.5rem 1rem;
 
   font-family: 'Alegreya Sans', serif;
+  font-size: 1rem;
   color: #E8DCC4;
 
   &:hover {
