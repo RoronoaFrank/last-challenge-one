@@ -6,10 +6,9 @@ import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
 
 const FormContainer = styled.div`
-  width: 90%;
-  max-width: 1200px;
+  width: min(90%, 1800px);
   margin: 1rem auto;
-  padding: 1rem;
+  padding: clamp(0.5rem, 3vw, 1rem);
   background-color: #2a2018;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(74, 103, 65, 0.3);
@@ -19,49 +18,57 @@ const FormContainer = styled.div`
 
 const FormTitle = styled.h2`
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.75rem, 4vw, 1rem);
   font-family: "Cinzel Decorative", serif;
   color: #c9a959;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
   letter-spacing: 1px;
 `;
 
 const Form = styled.form`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 3vw, 1.5rem);
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: clamp(0.75rem, 2vw, 1rem);
 `;
 
 const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: clamp(0.2rem, 1vw, 0.3rem);
+  flex: 1;
+  height: 100%;
 `;
 
 const Label = styled.label`
   font-family: "Cinzel", serif;
   color: #c9a959;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
 `;
 
 const Input = styled.input`
-  padding: 0.8rem;
+  padding: clamp(0.6rem, 2vw, 0.8rem);
   border: 1px solid #8b4513;
   border-radius: 6px;
   background-color: #1a1410;
   color: #e8dcc4;
   font-family: "Alegreya", serif;
+  width: 100%;
   transition: all 0.3s ease;
 
   &:focus {
@@ -72,13 +79,16 @@ const Input = styled.input`
 `;
 
 const TextArea = styled.textarea`
-  height: 300px;
-  padding: 1rem;
+  flex: 1;
+  min-height: 200px;
+  height: 100%;
+  padding: clamp(0.75rem, 2vw, 1rem);
   border: 1px solid #8b4513;
   border-radius: 6px;
   background-color: #1a1410;
   color: #e8dcc4;
   font-family: "Alegreya", serif;
+  width: 100%;
   resize: none;
   transition: all 0.3s ease;
 
@@ -106,19 +116,21 @@ const TextArea = styled.textarea`
 const ButtonGroup = styled.div`
   grid-column: 1 / -1;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 4rem;
-  margin-top: 2rem;
+  gap: clamp(1rem, 4vw, 4rem);
+  margin-top: clamp(1rem, 3vw, 2rem);
 `;
 
 const Button = styled.button`
-  padding: 0.8rem 2.5rem;
+  padding: clamp(0.6rem, 2vw, 0.8rem) clamp(1.5rem, 4vw, 2.5rem);
   border: none;
   border-radius: 6px;
   font-family: "Alegreya Sans", sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   cursor: pointer;
   transition: all 0.3s ease;
+  width: clamp(120px, 40%, 200px);
 
   &.save {
     background-color: #4a6741;
