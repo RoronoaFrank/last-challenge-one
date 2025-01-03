@@ -26,11 +26,15 @@ const Slide = styled.div`
   width: 100%;
   position: absolute;
   top: 0;
-  left: ${({ $active }) => ($active ? "0" : "100%")};
+  left: 0;
   opacity: ${({ $active }) => ($active ? "1" : "0")};
-  transform: ${({ $active }) =>
-    $active ? "translateX(0) scale(1)" : "translateX(50px) scale(0.95)"};
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: ${({ $active, $direction }) => 
+    $active 
+      ? "translateX(0) scale(1)" 
+      : `translateX(${$direction === 'next' ? '100%' : '-100%'}) scale(0.85)`
+  };
+  transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  filter: ${({ $active }) => ($active ? "brightness(1)" : "brightness(0.5)")};
   background: ${({ $background }) =>
     $background ? `url(${$background})` : "#1A1410"};
   background-position: center;
@@ -76,6 +80,23 @@ const Slide = styled.div`
     );
     z-index: -1;
   }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${({ $active }) => 
+      $active 
+        ? 'radial-gradient(circle at center, rgba(201, 169, 89, 0.1), rgba(26, 20, 16, 0.6))'
+        : 'none'
+    };
+    z-index: 1;
+    transition: opacity 1.2s ease;
+    opacity: ${({ $active }) => ($active ? "1" : "0")};
+  }
 `;
 
 const CategoryTitle = styled.h2`
@@ -83,19 +104,19 @@ const CategoryTitle = styled.h2`
   font-family: "Cinzel", sans-serif;
   color: #c9a959;
   margin: 0.5rem 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(201, 169, 89, 0.5),
+    0 0 20px rgba(201, 169, 89, 0.3);
   letter-spacing: 2px;
   position: relative;
   z-index: 2;
+  backdrop-filter: blur(3px);
+  padding: 0.5rem 2rem;
+  border-radius: 4px;
+  background: rgba(26, 20, 16, 0.6);
+  border: 1px solid rgba(201, 169, 89, 0.3);
 
-  &::after {
-    content: "";
-    display: block;
-    width: 60%;
-    height: 2px;
-    background: linear-gradient(to right, transparent, #c9a959, transparent);
-    margin: 0.5rem auto;
-  }
 `;
 
 const Description = styled.p`
@@ -105,8 +126,12 @@ const Description = styled.p`
   margin: 1rem 0;
   max-width: 80%;
   line-height: 1.6;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  position: relative;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(3px);
+  padding: 1rem 2rem;
+  background: rgba(26, 20, 16, 0.7);
+  border-radius: 4px;
+  border: 1px solid rgba(201, 169, 89, 0.2);
   z-index: 2;
 `;
 
@@ -148,6 +173,7 @@ const Button = styled.button`
 function MainBanner({ cards, validCategories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slides, setSlides] = useState([]);
+  const [direction, setDirection] = useState('next');
 
   useEffect(() => {
     if (cards.length > 0) {
@@ -176,6 +202,15 @@ function MainBanner({ cards, validCategories }) {
     }
   }, [cards, validCategories]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDirection('next');
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
   const nextSlide = (e) => {
     e.stopPropagation();
     setCurrentIndex((prev) => (prev + 1) % slides.length);
@@ -187,10 +222,10 @@ function MainBanner({ cards, validCategories }) {
 
   const handleSlideClick = () => {
     const currentSlide = slides[currentIndex];
-    const sectionId = currentSlide.category.toLowerCase().replace(/\s+/g, '-');
+    const sectionId = currentSlide.category.toLowerCase().replace(/\s+/g, "-");
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -201,6 +236,7 @@ function MainBanner({ cards, validCategories }) {
           key={slide.category}
           $active={index === currentIndex}
           $background={slide.background}
+          $direction={direction}
         >
           <CategoryTitle>{slide.category}</CategoryTitle>
           <Description>{slide.description}</Description>
