@@ -19,6 +19,7 @@ const CardContainer = styled.div`
   transition: transform 0.3s, box-shadow 0.3s;
   border: 1px solid #8b4513;
   position: relative;
+  cursor: pointer;
 
   /* Tablets: 2 cards por fila */
   @media (min-width: 768px) and (max-width: 1023px) {

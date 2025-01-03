@@ -9,19 +9,11 @@ const BannerWrapper = styled.div`
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(201, 169, 89, 0.2);
-  border-block: 2px solid #8B4513;
+  border-block: 2px solid #8b4513;
+  cursor: pointer;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(26, 20, 16, 0.7),
-      rgba(26, 20, 16, 0.4) 50%,
-      rgba(26, 20, 16, 0.8)
-    );
-    z-index: 1; 
+  &:hover {
+    box-shadow: 0 12px 28px rgba(201, 169, 89, 0.3);
   }
 `;
 
@@ -35,24 +27,27 @@ const Slide = styled.div`
   position: absolute;
   top: 0;
   left: ${({ $active }) => ($active ? "0" : "100%")};
-  transition: all 0.5s ease-in-out;
+  opacity: ${({ $active }) => ($active ? "1" : "0")};
+  transform: ${({ $active }) =>
+    $active ? "translateX(0) scale(1)" : "translateX(50px) scale(0.95)"};
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   background: ${({ $background }) =>
     $background ? `url(${$background})` : "#1A1410"};
   background-position: center;
   background-size: cover;
-  color: #E8DCC4;
+  color: #e8dcc4;
   padding: 2rem;
   text-align: center;
-  z-index: 0;
+  z-index: ${({ $active }) => ($active ? "1" : "0")};
 
   @media (min-width: 768px) {
     background-position: center 30%;
   }
-  
+
   @media (min-width: 1024px) {
     background-position: center 25%;
   }
-  
+
   @media (min-width: 1440px) {
     background-position: center 20%;
   }
@@ -68,7 +63,7 @@ const Slide = styled.div`
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -83,7 +78,6 @@ const Slide = styled.div`
   }
 `;
 
-
 const CategoryTitle = styled.h2`
   font-size: 2rem;
   font-family: "Cinzel", sans-serif;
@@ -93,18 +87,13 @@ const CategoryTitle = styled.h2`
   letter-spacing: 2px;
   position: relative;
   z-index: 2;
-  
+
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 60%;
     height: 2px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      #C9A959,
-      transparent
-    );
+    background: linear-gradient(to right, transparent, #c9a959, transparent);
     margin: 0.5rem auto;
   }
 `;
@@ -112,7 +101,7 @@ const CategoryTitle = styled.h2`
 const Description = styled.p`
   font-size: 1.2rem;
   font-family: "Roboto", sans-serif;
-  color: #E8DCC4;
+  color: #e8dcc4;
   margin: 1rem 0;
   max-width: 80%;
   line-height: 1.6;
@@ -133,8 +122,8 @@ const Controls = styled.div`
 
 const Button = styled.button`
   background-color: rgba(42, 32, 24, 0.8);
-  color: #E8DCC4;
-  border: 1px solid #C9A959;
+  color: #e8dcc4;
+  border: 1px solid #c9a959;
   padding: 0.7rem 1.5rem;
   font-family: "Alegreya Sans", sans-serif;
   font-size: 1rem;
@@ -145,12 +134,12 @@ const Button = styled.button`
   letter-spacing: 1px;
 
   &:hover {
-    background-color: #C9A959;
-    color: #1A1410;
+    background-color: #c9a959;
+    color: #1a1410;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(201, 169, 89, 0.3);
   }
-  
+
   &:active {
     transform: translateY(0);
   }
@@ -171,29 +160,48 @@ function MainBanner({ cards, validCategories }) {
         return acc;
       }, {});
 
-      const slidesArray = Object.entries(groupedSlides).map(([category, items]) => {
-        const randomItem = items[Math.floor(Math.random() * items.length)];
-        return {
-          category,
-          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          background: randomItem.urlImage || randomItem.urlVideo,
-        };
-      });
+      const slidesArray = Object.entries(groupedSlides).map(
+        ([category, items]) => {
+          const randomItem = items[Math.floor(Math.random() * items.length)];
+          return {
+            category,
+            description:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            background: randomItem.urlImage || randomItem.urlVideo,
+          };
+        }
+      );
 
       setSlides(slidesArray);
     }
   }, [cards, validCategories]);
 
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+  };
+  const prevSlide = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const handleSlideClick = () => {
+    const currentSlide = slides[currentIndex];
+    const sectionId = currentSlide.category.toLowerCase().replace(/\s+/g, '-');
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <BannerWrapper>
+    <BannerWrapper onClick={handleSlideClick}>
       {slides.map((slide, index) => (
-        <Slide 
-        key={slide.category} 
-        $active={index === currentIndex} 
-        $background={slide.background}>
+        <Slide
+          key={slide.category}
+          $active={index === currentIndex}
+          $background={slide.background}
+        >
           <CategoryTitle>{slide.category}</CategoryTitle>
           <Description>{slide.description}</Description>
         </Slide>
