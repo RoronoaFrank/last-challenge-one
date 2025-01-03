@@ -4,10 +4,7 @@ import styled from "styled-components";
 
 const BackdropOverlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(26, 20, 16, 0.85);
   backdrop-filter: blur(1px);
   z-index: 999;
@@ -18,20 +15,20 @@ const BackdropOverlay = styled.div`
 
 const ModalOverlay = styled.div`
   position: fixed;
-  top: 45px;
-  bottom: 45px;
-  left: 20%;
-  right: 20%;
+  top: clamp(20px, 5vh, 45px);
+  bottom: clamp(20px, 5vh, 45px);
+  left: min(5%, 20%);
+  right: min(5%, 20%);
   background-color: rgba(26, 20, 16, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  //align-items: center;
   z-index: 1000;
 `;
 
 const ModalContent = styled.div`
   background-color: #2a2018;
-  padding: 1rem;
+  padding: clamp(0.5rem, 2vw, 1rem);
   border-radius: 8px;
   border: 1px solid #c9a959;
   width: 100%;
@@ -47,19 +44,20 @@ const PlayerWrapper = styled.div`
   overflow: hidden; 
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-height: 0;
 `;
 
 const Description = styled.p`
   font-family: "Alegreya", serif;
   color: #e8dcc4;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   line-height: 1.6;
   height: 15%;
-  padding: 1rem;
+  padding: clamp(0.5rem, 2vw, 1rem);
   background-color: rgba(139, 69, 19, 0.1);
   border-radius: 4px;
   border-left: 3px solid #c9a959;
-  max-height: 150px;
+  max-height: min(30vh, 150px);
   overflow-y: auto;
 
   /* Estilizando scrollbar */
@@ -85,16 +83,15 @@ const Description = styled.p`
 
 const CloseButton = styled.button`
   position: absolute;
-  top: -15px;
-  right: -15px;
-  width: 30px;
-  height: 30px;
+  top: min(-15px, -2vw);
+  right: min(-15px, -2vw);
+  width: clamp(24px, 4vw, 30px);
+  height: clamp(24px, 4vw, 30px);
   background-color: #8b4513;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
   color: #e8dcc4;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   font-family: "Alegreya Sans", sans-serif;
   border-radius: 50%;
   border: 1px solid #c9a959;

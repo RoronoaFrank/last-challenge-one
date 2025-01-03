@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 const StylizedDialog = styled.dialog`
   width: min(75vw, 450px);
-  height: 520px;
+  height: min(95vh, 520px);
   max-height: min(100vh, 520px);
   border: 2px solid #8b4513;
   border-radius: 8px;
@@ -21,6 +21,7 @@ const StylizedDialog = styled.dialog`
   z-index: 1000;
   margin: 0;
   overflow: hidden;
+  box-shadow: 0 8px 16px rgba(74, 103, 65, 0.8);
 
   &[open] {
     display: grid;
@@ -85,7 +86,7 @@ const StylizedDialog = styled.dialog`
   }
 
   textarea {
-    height: 60px;
+    height: 50px;
     width: 100%;
     padding: clamp(0.3rem, 2vw, 0.5rem);
     background-color: #1a1410;
