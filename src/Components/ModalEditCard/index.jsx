@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { updateCard } from "../APIs";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
@@ -6,12 +6,13 @@ import CustomSelect from "./CustomSelect";
 import PropTypes from "prop-types";
 
 const StylizedDialog = styled.dialog`
-  width: 450px;
+  width: min(75vw, 450px);
   height: 520px;
+  max-height: min(100vh, 520px);
   border: 2px solid #8b4513;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(26, 20, 16, 0.4);
-  padding: 1rem;
+  padding: clamp(0.5rem, 3vw, 1rem);
   background-color: #2a2018;
   position: fixed;
   top: 50%;
@@ -19,14 +20,20 @@ const StylizedDialog = styled.dialog`
   transform: translate(-50%, -50%);
   z-index: 1000;
   margin: 0;
+  overflow: hidden;
+
+  &[open] {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
 
   &::backdrop {
     background: rgba(26, 20, 16, 0.85);
   }
 
   h2 {
-    margin-bottom: 0.5rem;
-    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
     text-align: center;
     color: #c9a959;
     font-family: "Cinzel", serif;
@@ -35,18 +42,18 @@ const StylizedDialog = styled.dialog`
 
   .close {
     background-color: #8b4513;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: clamp(28px, 5vw, 35px);
+    height: clamp(28px, 5vw, 35px);
+    display: grid;
+    place-items: center;
     color: #e8dcc4;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: clamp(5px, 2vw, 10px);
+    right: clamp(5px, 2vw, 10px);
     border-radius: 50%;
     border: 1px solid #c9a959;
     transition: all 0.3s ease;
+    cursor: pointer;
 
     &:hover {
       background-color: #a65d3f;
@@ -55,25 +62,36 @@ const StylizedDialog = styled.dialog`
   }
 
   form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    gap: clamp(0.3rem, 2vw, 0.5rem);
+  }
+
+  > * {
+    min-height: 0;
+    margin: 0;
+  }
+
+  input,
+  textarea {
+    height: auto;
+    min-height: 2.5rem; 
   }
 
   label {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
     font-weight: 500;
     color: #e8dcc4;
     font-family: "Alegreya", serif;
   }
 
   textarea {
+    height: 60px;
     width: 100%;
-    padding: 0.5rem;
+    padding: clamp(0.3rem, 2vw, 0.5rem);
     background-color: #1a1410;
     border: 1px solid #8b4513;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     font-family: "Alegreya Sans", sans-serif;
     color: #e8dcc4;
     resize: none;
@@ -111,11 +129,11 @@ const StylizedDialog = styled.dialog`
 
   input {
     width: 100%;
-    padding: 0.5rem;
+    padding: clamp(0.3rem, 2vw, 0.5rem);
     background-color: #1a1410;
     border: 1px solid #8b4513;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     font-family: "Alegreya Sans", sans-serif;
     color: #e8dcc4;
     transition: border-color 0.3s ease;
@@ -132,21 +150,23 @@ const StylizedDialog = styled.dialog`
   }
 
   .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
+    gap: clamp(0.5rem, 3vw, 1rem);
+    margin-top: clamp(0.3rem, 3vw, 0.5rem);
+    place-items: center;
   }
 
   button.save,
   button.reset {
-    padding: 0.7rem;
-    font-size: 1rem;
+    padding: clamp(0.5rem, 2vw, 0.7rem);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-family: "Alegreya Sans", sans-serif;
     transition: all 0.3s ease;
-    min-width: 100px;
+    width: 100px;
   }
 
   .save {
@@ -181,6 +201,7 @@ const ModalEditCard = ({
   description,
   onEditSuccess,
 }) => {
+  const dialogRef = useRef();
   const { categories } = useCategoryContext();
   const categoryNames = categories.map((category) => category.name);
 
@@ -207,6 +228,14 @@ const ModalEditCard = ({
       });
     }
   }, [isOpen, title, category, image, video, description]);
+
+  useEffect(() => {
+    if (isOpen) {
+      dialogRef.current?.showModal();
+    } else {
+      dialogRef.current?.close();
+    }
+  }, [isOpen]);
 
   const handleEdit = (e) => {
     const { name, value } = e.target;
@@ -239,7 +268,7 @@ const ModalEditCard = ({
   };
 
   return (
-    <StylizedDialog open={isOpen}>
+    <StylizedDialog ref={dialogRef}>
       <button
         type="button"
         className="close"
