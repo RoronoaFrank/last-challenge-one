@@ -7,8 +7,22 @@ const BannerWrapper = styled.div`
   height: 450px;
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(201, 169, 89, 0.2);
+  border-block: 2px solid #8B4513;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 20, 16, 0.7),
+      rgba(26, 20, 16, 0.4) 50%,
+      rgba(26, 20, 16, 0.8)
+    );
+    z-index: 1; 
+  }
 `;
 
 const Slide = styled.div`
@@ -23,10 +37,50 @@ const Slide = styled.div`
   left: ${({ $active }) => ($active ? "0" : "100%")};
   transition: all 0.5s ease-in-out;
   background: ${({ $background }) =>
-    $background ? `url(${$background}) no-repeat center/cover` : "#333"};
-  color: white;
-  padding: 1.5rem;
+    $background ? `url(${$background})` : "#1A1410"};
+  background-position: center;
+  background-size: cover;
+  color: #E8DCC4;
+  padding: 2rem;
   text-align: center;
+  z-index: 0;
+
+  @media (min-width: 768px) {
+    background-position: center 30%;
+  }
+  
+  @media (min-width: 1024px) {
+    background-position: center 25%;
+  }
+  
+  @media (min-width: 1440px) {
+    background-position: center 20%;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at center,
+      transparent 30%,
+      rgba(26, 20, 16, 0.6) 100%
+    );
+    z-index: -1;
+  }
 `;
 
 
@@ -35,35 +89,70 @@ const CategoryTitle = styled.h2`
   font-family: "Cinzel", sans-serif;
   color: #c9a959;
   margin: 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 2;
+  
+  &::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      #C9A959,
+      transparent
+    );
+    margin: 0.5rem auto;
+  }
 `;
 
 const Description = styled.p`
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-family: "Roboto", sans-serif;
-  color: #f5f5f5;
-  margin: 0;
+  color: #E8DCC4;
+  margin: 1rem 0;
+  max-width: 80%;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 2;
 `;
 
 const Controls = styled.div`
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 2rem;
+  z-index: 2;
 `;
 
 const Button = styled.button`
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
+  background-color: rgba(42, 32, 24, 0.8);
+  color: #E8DCC4;
+  border: 1px solid #C9A959;
+  padding: 0.7rem 1.5rem;
+  font-family: "Alegreya Sans", sans-serif;
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
   &:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #C9A959;
+    color: #1A1410;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(201, 169, 89, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
 `;
 
