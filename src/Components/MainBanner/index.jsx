@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
-import PropTypes from "prop-types";
+import IconsBanner from "./IconsBanner";
 
 const BannerWrapper = styled.div`
   width: 100%;
@@ -13,13 +13,15 @@ const BannerWrapper = styled.div`
   position: relative;
   overflow: hidden;
   border-radius: clamp(8px, 1vw, 12px);
-  box-shadow: 0 clamp(4px, 1vw, 8px) clamp(12px, 2vw, 24px) rgba(201, 169, 89, 0.2);
+  box-shadow: 0 clamp(4px, 1vw, 8px) clamp(12px, 2vw, 24px)
+    rgba(201, 169, 89, 0.2);
   border-block: clamp(1px, 0.2vw, 2px) solid #8b4513;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 clamp(6px, 1.5vw, 12px) clamp(14px, 2.5vw, 28px) rgba(201, 169, 89, 0.3);
+    box-shadow: 0 clamp(6px, 1.5vw, 12px) clamp(14px, 2.5vw, 28px)
+      rgba(201, 169, 89, 0.3);
   }
 `;
 
@@ -34,11 +36,10 @@ const Slide = styled.div`
   top: 0;
   left: 0;
   opacity: ${({ $active }) => ($active ? "1" : "0")};
-  transform: ${({ $active, $direction }) => 
-    $active 
-      ? "translateX(0) scale(1)" 
-      : `translateX(${$direction === 'next' ? '100%' : '-100%'}) scale(0.85)`
-  };
+  transform: ${({ $active, $direction }) =>
+    $active
+      ? "translateX(0) scale(1)"
+      : `translateX(${$direction === "next" ? "100%" : "-100%"}) scale(0.85)`};
   transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   filter: ${({ $active }) => ($active ? "brightness(1)" : "brightness(0.5)")};
   background: ${({ $background }) =>
@@ -88,14 +89,13 @@ const Slide = styled.div`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: ${({ $active }) => 
-      $active 
-        ? 'radial-gradient(circle at center, rgba(201, 169, 89, 0.1), rgba(26, 20, 16, 0.6))'
-        : 'none'
-    };
+    background: ${({ $active }) =>
+      $active
+        ? "radial-gradient(circle at center, rgba(201, 169, 89, 0.1), rgba(26, 20, 16, 0.6))"
+        : "none"};
     z-index: 1;
     transition: opacity 1.2s ease;
     opacity: ${({ $active }) => ($active ? "1" : "0")};
@@ -107,9 +107,7 @@ const CategoryTitle = styled.h2`
   font-family: "Cinzel", sans-serif;
   color: #c9a959;
   margin: clamp(0.3rem, 0.5vw, 0.8rem) 0;
-  text-shadow: 
-    2px 2px 4px rgba(0, 0, 0, 0.8),
-    0 0 10px rgba(201, 169, 89, 0.5),
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(201, 169, 89, 0.5),
     0 0 20px rgba(201, 169, 89, 0.3);
   letter-spacing: clamp(1px, 0.15vw, 2.5px);
   position: relative;
@@ -119,7 +117,6 @@ const CategoryTitle = styled.h2`
   border-radius: 4px;
   background: rgba(26, 20, 16, 0.6);
   border: 1px solid rgba(201, 169, 89, 0.3);
-
 `;
 
 const Description = styled.p`
@@ -177,17 +174,20 @@ const Button = styled.button`
 function MainBanner() {
   const { categories } = useCategoryContext();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState('next');
+  const [direction, setDirection] = useState("next");
+  const [isPaused, setIsPaused] = useState(false);
+  const { PlayIcon, PauseIcon, NextIcon, PrevIcon } = IconsBanner;
 
-  
   useEffect(() => {
+    if (isPaused) return;
+
     const interval = setInterval(() => {
-      setDirection('next');
+      setDirection("next");
       setCurrentIndex((prev) => (prev + 1) % categories.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [categories.length]);
+  }, [categories.length, isPaused]);
 
   const nextSlide = (e) => {
     e.stopPropagation();
@@ -195,7 +195,19 @@ function MainBanner() {
   };
   const prevSlide = (e) => {
     e.stopPropagation();
-    setCurrentIndex((prev) => (prev - 1 + categories.length) % categories.length);
+    setCurrentIndex(
+      (prev) => (prev - 1 + categories.length) % categories.length
+    );
+  };
+
+  const pauseSlider = (e) => {
+    e.stopPropagation();
+    setIsPaused(true);
+  };
+
+  const resumeSlider = (e) => {
+    e.stopPropagation();
+    setIsPaused(false);
   };
 
   const handleSlideClick = () => {
@@ -221,15 +233,24 @@ function MainBanner() {
         </Slide>
       ))}
       <Controls>
-        <Button onClick={prevSlide}>{"<"}</Button>
-        <Button onClick={nextSlide}>{">"}</Button>
+        <Button onClick={prevSlide}>
+          <PrevIcon />
+        </Button>
+        {!isPaused ? (
+          <Button onClick={pauseSlider}>
+            <PauseIcon />
+          </Button>
+        ) : (
+          <Button onClick={resumeSlider}>
+            <PlayIcon />
+          </Button>
+        )}
+        <Button onClick={nextSlide}>
+          <NextIcon />
+        </Button>
       </Controls>
     </BannerWrapper>
   );
 }
-
-MainBanner.propTypes = {
-  cards: PropTypes.array.isRequired,
-};
 
 export default MainBanner;
