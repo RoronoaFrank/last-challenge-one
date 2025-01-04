@@ -171,8 +171,8 @@ const NewVideo = () => {
   });
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
-  const [notificationButtonText, setNotificationButtonText] =
-    useState("Aceptar");
+  const [notificationButtonText, setNotificationButtonText] = useState("Aceptar");
+  const [notificationOnClose, setNotificationOnClose] = useState(() => () => {});
   // Manejar los cambios en los inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -189,7 +189,7 @@ const NewVideo = () => {
     e.preventDefault();
     switch (true) {
       case Object.values(formData).every((value) => !value.trim()):
-        setNotificationMessage("Por favor completa el formulario al 100%.");
+        setNotificationMessage("Por favor llena completamente el formulario.");
         setNotificationButtonText("Aceptar");
         setShowNotification(true);
         return;
@@ -243,7 +243,12 @@ const NewVideo = () => {
             urlVideo: "",
             description: "",
           });
-          navigate("/");
+          const handleCloseNotification = () => {
+            setShowNotification(false);
+            navigate("/");
+          };
+      
+          setNotificationOnClose(() => handleCloseNotification);
         } catch (error) {
           console.error("Error al agregar el video:", error);
           setNotificationMessage("Hubo un error al agregar el video.");
@@ -263,7 +268,10 @@ const NewVideo = () => {
           <Notification
             message={notificationMessage}
             buttonText={notificationButtonText}
-            onClose={() => setShowNotification(false)}
+            onClose={() => {
+              notificationOnClose();
+              setShowNotification(false)
+            }}
           />
         )}
         <LeftColumn>
