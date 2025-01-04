@@ -4,6 +4,7 @@ import { postCard } from "../APIs";
 import CustomSelect from "../ModalEditCard/CustomSelect";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
+import Notification from "../Notification";
 
 const FormContainer = styled.div`
   width: min(90%, 1800px);
@@ -168,6 +169,10 @@ const NewVideo = () => {
     urlVideo: "",
     description: "",
   });
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationButtonText, setNotificationButtonText] =
+    useState("Aceptar");
   // Manejar los cambios en los inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -182,24 +187,70 @@ const NewVideo = () => {
   // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Enviar los datos al servidor
-      await postCard(formData);
-      alert("Video agregado exitosamente");
+    switch (true) {
+      case Object.values(formData).every((value) => !value.trim()):
+        setNotificationMessage("Por favor completa el formulario al 100%.");
+        setNotificationButtonText("Aceptar");
+        setShowNotification(true);
+        return;
 
-      // Reiniciar el formulario
-      setFormData({
-        title: "",
-        category: "",
-        urlImage: "",
-        urlVideo: "",
-        description: "",
-      });
-    } catch (error) {
-      console.error("Error al agregar el video:", error);
-      alert("Hubo un error al agregar el video");
+      case !formData.title.trim():
+        setNotificationMessage("Por favor ingresa un título.");
+        setNotificationButtonText("Aceptar");
+        setShowNotification(true);
+        return;
+
+      case !formData.category.trim():
+        setNotificationMessage("Por favor selecciona una categoría.");
+        setNotificationButtonText("Aceptar");
+        setShowNotification(true);
+        return;
+
+      case !formData.urlImage.trim():
+        setNotificationMessage("Por favor ingresa una URL de imagen.");
+        setNotificationButtonText("Aceptar");
+        setShowNotification(true);
+        return;
+
+      case !formData.urlVideo.trim() ||
+        !/^https:\/\/(www\.)?youtube\.com\/.+$/.test(formData.urlVideo):
+        setNotificationMessage(
+          "Por favor ingresa una URL de video de YouTube."
+        );
+        setNotificationButtonText("Aceptar");
+        setShowNotification(true);
+        return;
+
+      case !formData.description.trim():
+        setNotificationMessage("Por favor escribe una descripción.");
+        setNotificationButtonText("Aceptar");
+        setShowNotification(true);
+        return;
+
+      default:
+        try {
+          // Enviar los datos al servidor
+          await postCard(formData);
+          setNotificationMessage("Video agregado exitosamente.");
+          setNotificationButtonText("Aceptar");
+          setShowNotification(true);
+
+          // Reiniciar el formulario
+          setFormData({
+            title: "",
+            category: "",
+            urlImage: "",
+            urlVideo: "",
+            description: "",
+          });
+          navigate("/");
+        } catch (error) {
+          console.error("Error al agregar el video:", error);
+          setNotificationMessage("Hubo un error al agregar el video.");
+          setNotificationButtonText("Aceptar");
+          setShowNotification(true);
+        }
     }
-    navigate("/");
   };
 
   const handleCancel = () => navigate("/");
@@ -208,6 +259,13 @@ const NewVideo = () => {
     <FormContainer>
       <FormTitle>Agregar Nuevo Video</FormTitle>
       <Form onSubmit={handleSubmit}>
+        {showNotification && (
+          <Notification
+            message={notificationMessage}
+            buttonText={notificationButtonText}
+            onClose={() => setShowNotification(false)}
+          />
+        )}
         <LeftColumn>
           <FormGroup>
             <Label htmlFor="title">Título</Label>
@@ -218,7 +276,6 @@ const NewVideo = () => {
               placeholder="Ingresa el título"
               value={formData.title}
               onChange={handleChange}
-              required
             />
           </FormGroup>
 
@@ -245,7 +302,6 @@ const NewVideo = () => {
               placeholder="URL de la imagen"
               value={formData.urlImage}
               onChange={handleChange}
-              required
             />
           </FormGroup>
 
@@ -258,7 +314,6 @@ const NewVideo = () => {
               placeholder="URL del video"
               value={formData.urlVideo}
               onChange={handleChange}
-              required
             />
           </FormGroup>
         </LeftColumn>
