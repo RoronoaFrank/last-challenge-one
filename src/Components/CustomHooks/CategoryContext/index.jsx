@@ -18,7 +18,7 @@ export const CategoryProvider = ({ children }) => {
     {
       name: "Historias individuales",
       description: "Desde la sabiduría de Gandalf hasta el legado de Aragorn, pasando por el terror de Morgoth: descubre las historias de los personajes que moldearon el destino de la Tierra Media.",
-      image: "/assets/personajes.png"
+      image: "/assets/morgoth.png"
     },
     {
       name: "Razas de la Tierra Media",

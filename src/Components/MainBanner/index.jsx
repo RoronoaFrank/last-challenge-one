@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -100,19 +101,19 @@ const Slide = styled.div`
 `;
 
 const CategoryTitle = styled.h2`
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 1.2rem + 2vw, 2.5rem);
   font-family: "Cinzel", sans-serif;
   color: #c9a959;
-  margin: 0.5rem 0;
+  margin: clamp(0.3rem, 0.5vw, 0.8rem) 0;
   text-shadow: 
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(201, 169, 89, 0.5),
     0 0 20px rgba(201, 169, 89, 0.3);
-  letter-spacing: 2px;
+  letter-spacing: clamp(1px, 0.15vw, 2.5px);
   position: relative;
   z-index: 2;
   backdrop-filter: blur(3px);
-  padding: 0.5rem 2rem;
+  padding: clamp(0.3rem, 1vw, 0.8rem) clamp(1rem, 2vw, 2.5rem);
   border-radius: 4px;
   background: rgba(26, 20, 16, 0.6);
   border: 1px solid rgba(201, 169, 89, 0.3);
@@ -120,15 +121,15 @@ const CategoryTitle = styled.h2`
 `;
 
 const Description = styled.p`
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 0.95rem + 0.5vw, 1.3rem);
   font-family: "Roboto", sans-serif;
   color: #e8dcc4;
-  margin: 1rem 0;
-  max-width: 80%;
-  line-height: 1.6;
+  margin: clamp(0.5rem, 1vw, 1.2rem) 0;
+  max-width: min(80%, 800px);
+  line-height: clamp(1.4, 1.5 + 0.2vw, 1.7);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(3px);
-  padding: 1rem 2rem;
+  padding: clamp(0.8rem, 1vw, 1.2rem) clamp(1rem, 2vw, 2.5rem);
   background: rgba(26, 20, 16, 0.7);
   border-radius: 4px;
   border: 1px solid rgba(201, 169, 89, 0.2);
@@ -137,26 +138,27 @@ const Description = styled.p`
 
 const Controls = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: clamp(10px, 3vw, 25px);
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 2rem;
+  padding: 0 clamp(1rem, 2vw, 2.5rem);
   z-index: 2;
+  gap: clamp(0.5rem, 1vw, 1.5rem);
 `;
 
 const Button = styled.button`
   background-color: rgba(42, 32, 24, 0.8);
   color: #e8dcc4;
   border: 1px solid #c9a959;
-  padding: 0.7rem 1.5rem;
+  padding: clamp(0.5rem, 0.7vw, 0.9rem) clamp(1rem, 1.5vw, 2rem);
   font-family: "Alegreya Sans", sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.1rem);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: clamp(0.5px, 0.1vw, 1.2px);
 
   &:hover {
     background-color: #c9a959;
@@ -170,59 +172,33 @@ const Button = styled.button`
   }
 `;
 
-function MainBanner({ cards, validCategories }) {
+function MainBanner() {
+  const { categories } = useCategoryContext();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slides, setSlides] = useState([]);
   const [direction, setDirection] = useState('next');
 
-  useEffect(() => {
-    if (cards.length > 0) {
-      const groupedSlides = cards.reduce((acc, card) => {
-        const { category } = card;
-        if (validCategories.includes(category)) {
-          if (!acc[category]) acc[category] = [];
-          acc[category].push(card);
-        }
-        return acc;
-      }, {});
-
-      const slidesArray = Object.entries(groupedSlides).map(
-        ([category, items]) => {
-          const randomItem = items[Math.floor(Math.random() * items.length)];
-          return {
-            category,
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            background: randomItem.urlImage || randomItem.urlVideo,
-          };
-        }
-      );
-
-      setSlides(slidesArray);
-    }
-  }, [cards, validCategories]);
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setDirection('next');
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
+      setCurrentIndex((prev) => (prev + 1) % categories.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, [categories.length]);
 
   const nextSlide = (e) => {
     e.stopPropagation();
-    setCurrentIndex((prev) => (prev + 1) % slides.length);
+    setCurrentIndex((prev) => (prev + 1) % categories.length);
   };
   const prevSlide = (e) => {
     e.stopPropagation();
-    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentIndex((prev) => (prev - 1 + categories.length) % categories.length);
   };
 
   const handleSlideClick = () => {
-    const currentSlide = slides[currentIndex];
-    const sectionId = currentSlide.category.toLowerCase().replace(/\s+/g, "-");
+    const currentCategory = categories[currentIndex];
+    const sectionId = currentCategory.name.toLowerCase().replace(/\s+/g, "-");
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -231,15 +207,15 @@ function MainBanner({ cards, validCategories }) {
 
   return (
     <BannerWrapper onClick={handleSlideClick}>
-      {slides.map((slide, index) => (
+      {categories.map((category, index) => (
         <Slide
-          key={slide.category}
+          key={category.name}
           $active={index === currentIndex}
-          $background={slide.background}
+          $background={category.image}
           $direction={direction}
         >
-          <CategoryTitle>{slide.category}</CategoryTitle>
-          <Description>{slide.description}</Description>
+          <CategoryTitle>{category.name}</CategoryTitle>
+          <Description>{category.description}</Description>
         </Slide>
       ))}
       <Controls>
@@ -252,7 +228,6 @@ function MainBanner({ cards, validCategories }) {
 
 MainBanner.propTypes = {
   cards: PropTypes.array.isRequired,
-  validCategories: PropTypes.array.isRequired,
 };
 
 export default MainBanner;
