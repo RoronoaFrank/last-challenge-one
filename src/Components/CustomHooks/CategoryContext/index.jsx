@@ -7,27 +7,23 @@ export const CategoryProvider = ({ children }) => {
   const [categories, setCategories] = useState([
     {
       name: "Origenes",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      image: "url-imagen-categoria-1",
-      videos: ["url-video-1", "url-video-2"],
+      description: "Desde la Música de los Ainur hasta la forja de los Silmarils: descubre los mitos que dieron vida a Arda y los eventos que forjaron el destino de la Tierra Media.",
+      image: "/assets/origenes.png"
     },
     {
       name: "Dragones & Tierra Media",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      image: "url-imagen-categoria-2",
-      videos: ["url-video-3", "url-video-4"],
+      description: "Contempla el poder y terror de Glaurung, Ancalagon y las antiguas serpientes de Morgoth. Historias de las bestias más temibles que jamás surcaron los cielos de Arda.",
+      image: "/assets/dragones.png"
     },
     {
       name: "Historias individuales",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      image: "url-imagen-categoria-2",
-      videos: ["url-video-3", "url-video-4"],
+      description: "Desde la sabiduría de Gandalf hasta el legado de Aragorn, pasando por el terror de Morgoth: descubre las historias de los personajes que moldearon el destino de la Tierra Media.",
+      image: "/assets/personajes.png"
     },
     {
       name: "Razas de la Tierra Media",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      image: "url-imagen-categoria-2",
-      videos: ["url-video-3", "url-video-4"],
+      description: "Explora la majestuosidad de los Elfos, la resistencia de los Enanos, el valor de los Hombres y la singular naturaleza de cada pueblo que habitó estas tierras legendarias.",
+      image: "/assets/razas.png"
     }
   ]);
 
