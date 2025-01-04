@@ -5,16 +5,21 @@ import PropTypes from "prop-types";
 
 const BannerWrapper = styled.div`
   width: 100%;
-  height: 450px;
+  min-height: min(450px, 80vh);
+
+  @media (min-width: 768px) {
+    height: min(450px, 60vh);
+  }
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(201, 169, 89, 0.2);
-  border-block: 2px solid #8b4513;
+  border-radius: clamp(8px, 1vw, 12px);
+  box-shadow: 0 clamp(4px, 1vw, 8px) clamp(12px, 2vw, 24px) rgba(201, 169, 89, 0.2);
+  border-block: clamp(1px, 0.2vw, 2px) solid #8b4513;
   cursor: pointer;
+  transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 12px 28px rgba(201, 169, 89, 0.3);
+    box-shadow: 0 clamp(6px, 1.5vw, 12px) clamp(14px, 2.5vw, 28px) rgba(201, 169, 89, 0.3);
   }
 `;
 
@@ -41,12 +46,12 @@ const Slide = styled.div`
   background-position: center;
   background-size: cover;
   color: #e8dcc4;
-  padding: 2rem;
+  padding: clamp(1rem, 2vw, 2.5rem);
   text-align: center;
   z-index: ${({ $active }) => ($active ? "1" : "0")};
 
   @media (min-width: 768px) {
-    background-position: center 30%;
+    background-position: center clamp(20%, 30vh, 30%);
   }
 
   @media (min-width: 1024px) {
@@ -76,7 +81,7 @@ const Slide = styled.div`
     height: 100%;
     background: radial-gradient(
       circle at center,
-      transparent 30%,
+      transparent clamp(20%, 3vw, 30%),
       rgba(26, 20, 16, 0.6) 100%
     );
     z-index: -1;
@@ -85,10 +90,7 @@ const Slide = styled.div`
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: ${({ $active }) => 
       $active 
         ? 'radial-gradient(circle at center, rgba(201, 169, 89, 0.1), rgba(26, 20, 16, 0.6))'
