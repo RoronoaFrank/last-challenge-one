@@ -1,6 +1,7 @@
 import ReactPlayer from "react-player";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import IconsBanner from "../MainBanner/IconsBanner";
 
 const BackdropOverlay = styled.div`
   position: fixed;
@@ -88,11 +89,10 @@ const CloseButton = styled.button`
   width: clamp(24px, 4vw, 30px);
   height: clamp(24px, 4vw, 30px);
   background-color: #8b4513;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #e8dcc4;
-  font-size: clamp(0.875rem, 2vw, 1rem);
-  font-family: "Alegreya Sans", sans-serif;
   border-radius: 50%;
   border: 1px solid #c9a959;
   transition: all 0.3s ease;
@@ -120,7 +120,9 @@ function ModalPlayer({ isOpen, onClose, video, description }) {
         />
           </PlayerWrapper>
           <Description>{description}</Description>
-          <CloseButton onClick={onClose}>x</CloseButton>
+          <CloseButton onClick={onClose}>
+            <IconsBanner.CloseIcon />
+          </CloseButton>
         </ModalContent>
       </ModalOverlay>
     </BackdropOverlay>

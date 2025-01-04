@@ -173,10 +173,10 @@ const Button = styled.button`
 
 function MainBanner() {
   const { categories } = useCategoryContext();
+  const { PlayIcon, PauseIcon, NextIcon, PrevIcon } = IconsBanner;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("next");
   const [isPaused, setIsPaused] = useState(false);
-  const { PlayIcon, PauseIcon, NextIcon, PrevIcon } = IconsBanner;
 
   useEffect(() => {
     if (isPaused) return;

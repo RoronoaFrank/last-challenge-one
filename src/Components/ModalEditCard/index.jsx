@@ -4,6 +4,7 @@ import useCategoryContext from "../CustomHooks/useCategoryContext";
 import styled from "styled-components";
 import CustomSelect from "./CustomSelect";
 import PropTypes from "prop-types";
+import IconsBanner from "../MainBanner/IconsBanner";
 
 const StylizedDialog = styled.dialog`
   width: min(75vw, 450px);
@@ -278,7 +279,7 @@ const ModalEditCard = ({
           handleReset();
         }}
       >
-        ×
+        <IconsBanner.CloseIcon />
       </button>
       <h2>Editar Card</h2>
 
