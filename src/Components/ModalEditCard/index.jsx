@@ -24,13 +24,27 @@ const StylizedDialog = styled.dialog`
   overflow: hidden;
   box-shadow: 0 8px 16px rgba(74, 103, 65, 0.8);
 
+  animation: fadeIn 0.3s ease-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+
   &[open] {
     display: grid;
     grid-template-rows: auto 1fr auto;
   }
 
   &::backdrop {
-    background: rgba(26, 20, 16, 0.85);
+    background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
   }
 
   h2 {
@@ -345,7 +359,7 @@ const ModalEditCard = ({
           </button>
         </div>
       </form>
-    </StylizedDialog>
+    </StylizedDialog> 
   );
 };
 
