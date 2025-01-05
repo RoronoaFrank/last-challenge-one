@@ -3,12 +3,22 @@ import { Link } from "react-router-dom";
 import ButtonsHeader from "../Buttons";
 
 const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 50;
   background-color: #1a1410;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: 1rem 2rem;
   gap: 2rem;
+  border-bottom: 1px solid;
+  border-image: linear-gradient(
+    to right,
+    transparent,
+    #C9A959,
+    transparent
+  ) 1;
 
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
