@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useCardContext } from "../Banner";
 import styled from "styled-components";
 import ModalPlayer from "../ModalPlayer";
 import ModalEditCard from "../ModalEditCard";
+import Notification from "../Notification";
 import PropTypes from "prop-types";
 
 const CardContainer = styled.div`
@@ -100,11 +101,11 @@ const Description = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #C9A959;
+    background-color: #c9a959;
     border-radius: 4px;
-    
+
     &:hover {
-      background-color: #E2C792;
+      background-color: #e2c792;
     }
   }
 
@@ -145,6 +146,7 @@ const Button = styled.button`
   }
 `;
 
+
 function Card({
   id,
   image,
@@ -154,15 +156,37 @@ function Card({
   description,
   onEditSuccess,
 }) {
+  const notificationRef = useRef(null);
   const { deleteCard } = useCardContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlayerModalOpen, setIsPlayerModalOpen] = useState(false);
+
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationButtonText, setNotificationButtonText] = useState("Confirmar");
+  const [notificationOnClose, setNotificationOnClose] = useState(() => {});
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const openPlayerModal = () => setIsPlayerModalOpen(true);
   const closePlayerModal = () => setIsPlayerModalOpen(false);
+
+  const handleOutsideClick = (event) => {
+    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      setShowNotification(false); 
+    }
+  };
+
+  useEffect(() => {
+    if (showNotification) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [showNotification]);
 
   const handleCardClick = (event) => {
     // Verifica si el clic no fue en un botón
@@ -175,11 +199,22 @@ function Card({
   };
 
   const handleDelete = () => {
-    const confirmDelete = window.confirm(
-      `¿Estás seguro de que quieres eliminar la tarjeta "${title}"?`
-    );
-    if (confirmDelete) {
-      deleteCard(id);
+    switch (true) {
+      case true:
+        setNotificationMessage(
+          `¿Estás seguro de que quieres eliminar el video "${title}"?`
+        );
+        setNotificationButtonText("Confirmar");
+        setNotificationOnClose(() => () => {
+          deleteCard(id);
+          setShowNotification(false);
+        });
+        setShowNotification(true);
+        break;
+
+      default:
+        console.warn("Acción no manejada");
+        break;
     }
   };
 
@@ -188,7 +223,7 @@ function Card({
       <CardContainer onClick={handleCardClick}>
         <ThumbnailWrapper>
           <Thumbnail $image={image} alt={`Imagen descriptiva de: ${title}`} />
-          <Description >{description}</Description>
+          <Description>{description}</Description>
         </ThumbnailWrapper>
         <Title title={title}>{title}</Title>
         <ButtonsContainer>
@@ -216,6 +251,16 @@ function Card({
           closeModal();
         }}
       />
+      {showNotification && (
+        <div ref={notificationRef}>
+          <Notification
+            message={notificationMessage}
+            buttonText={notificationButtonText}
+            onClose={notificationOnClose}
+            onCancel={() => setShowNotification(false)}
+          />
+        </div>
+      )}
     </>
   );
 }
