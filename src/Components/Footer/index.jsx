@@ -61,7 +61,7 @@ const Footer = () => {
         <p className="copyright-info">
           | Developed by {""}
           <a
-            href="https://github.com/tu-usuario"
+            href="https://www.linkedin.com/in/devfranciscocruzs"
             target="_blank"
             rel="noopener noreferrer"
           >
