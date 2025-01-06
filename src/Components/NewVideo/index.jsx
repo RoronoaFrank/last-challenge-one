@@ -245,7 +245,7 @@ const NewVideo = () => {
           });
           const handleCloseNotification = () => {
             setShowNotification(false);
-            navigate("/");
+            navigate("/", { state: { category: formData.category } });
           };
       
           setNotificationOnClose(() => handleCloseNotification);

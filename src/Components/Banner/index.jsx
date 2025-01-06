@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import useCategoryContext from "../CustomHooks/useCategoryContext";
 import { getCards, deleteCard } from "../APIs";
 import styled from "styled-components";
@@ -24,6 +25,7 @@ export function useCardContext() {
 function Banner() {
   const [cards, setCards] = useState([]);
   const { categories } = useCategoryContext();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -38,9 +40,25 @@ function Banner() {
     fetchCards();
   }, []);
 
+  useEffect(() => {
+    if (location.state?.category) {
+      const categoryId = location.state.category.toLowerCase().replace(/\s+/g, '-');
+      const categoryElement = document.getElementById(categoryId);
+  
+      if (categoryElement) {
+        categoryElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      } else {
+        console.warn(`Element with ID "${categoryId}" not found.`);
+      }
+    }
+  }, [cards, location.state]);
+
   const handleDeleteCard = async (id) => {
     try {
-      await deleteCard(id); // Usamos la función centralizada para eliminar
+      await deleteCard(id); 
       setCards((prevCards) => prevCards.filter((card) => card.id !== id));
     } catch (error) {
       console.error("Error deleting card:", error);
